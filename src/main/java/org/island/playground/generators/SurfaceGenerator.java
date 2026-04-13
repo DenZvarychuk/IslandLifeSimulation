@@ -1,11 +1,17 @@
-package main.java.org.island.playground;
+package main.java.org.island.playground.generators;
+
+import main.java.org.island.playground.BiomeType;
+import main.java.org.island.playground.Location;
+import main.java.org.island.playground.SurfaceType;
 
 public class SurfaceGenerator {
+    private final double ROCK_PERCENTAGE = 0.2;
+
     public void generate(Location[][] location, int size, long seed) {
         for (int x = 0; x < size; x++) {
             for (int y = 0; y < size; y++) {
                 Location loc = location[x][y];
-                double v = Randome.generate(x, y, seed);
+                double v = RandomGenerator.generate(x, y, seed);
 
                 if (loc.getBiome() == BiomeType.WATER) {
                     loc.setSurface(SurfaceType.WATER);
@@ -15,7 +21,7 @@ public class SurfaceGenerator {
                 if (isNextToWater(x, y, size, location)){
                     loc.setSurface(SurfaceType.SAND);
                 } else {
-                    if (v < 0.2) loc.setSurface(SurfaceType.ROCK);
+                    if (v < ROCK_PERCENTAGE) loc.setSurface(SurfaceType.ROCK);
                     else loc.setSurface(SurfaceType.GRASS);
                 }
 
