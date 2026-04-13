@@ -1,4 +1,7 @@
-package main.java.org.island;
+package main.java.org.island.exceptions;
 
-public class ApplicationExceptions {
+public class ApplicationExceptions extends Exception{
+    public ApplicationExceptions(String message){
+        super(message);
+    }
 }
