@@ -1,9 +1,14 @@
-package main.java.org.island.playground;
+package main.java.org.island.playground.generators;
+
+import main.java.org.island.playground.BiomeType;
+import main.java.org.island.playground.Location;
 
 public class BiomeGenerator {
+    private final double SCALE = 0.85;
+    private final double WATER_PERCENTAGE = 0.2;
+    private final double FIELD_PERCENTAGE = 0.8;
 
     public void generate(Location[][] location, int size, int noiseScale, long seed) {
-        double scale = 0.85;
         for (int x = 0; x < size; x++) {
             for (int y = 0; y < size; y++) {
                 Location loc = location[x][y];
@@ -13,7 +18,7 @@ public class BiomeGenerator {
                 boolean leftSide = y < 1;
                 boolean rightSide = y >= size - 1;
 
-                double v = noise(x * scale, y * scale, noiseScale, seed);
+                double v = noise(x * SCALE, y * SCALE, noiseScale, seed);
 
                 // TODO make WATER around Island smoother using Circle
                 if (top || bottom || leftSide || rightSide)
@@ -37,10 +42,10 @@ public class BiomeGenerator {
         double sy = smooth((y % noiseScale) / (double) noiseScale);
 
         // corners fow blocks
-        double n00 = Randome.generate(x0, y0, seed);
-        double n10 = Randome.generate(x1, y0, seed);
-        double n01 = Randome.generate(x0, y1, seed);
-        double n11 = Randome.generate(x1, y1, seed);
+        double n00 = RandomGenerator.generate(x0, y0, seed);
+        double n10 = RandomGenerator.generate(x1, y0, seed);
+        double n01 = RandomGenerator.generate(x0, y1, seed);
+        double n11 = RandomGenerator.generate(x1, y1, seed);
 
         // interpolar
         double ix0 = lepr(n00, n10, sx);
@@ -57,8 +62,8 @@ public class BiomeGenerator {
     }
 
     private BiomeType mapToBiome(double v) {
-        if (v < 0.2) return BiomeType.WATER;
-        if (v < 0.8) return BiomeType.FIELD;
+        if (v < WATER_PERCENTAGE) return BiomeType.WATER;
+        if (v < FIELD_PERCENTAGE) return BiomeType.FIELD;
         return BiomeType.FOREST;
     }
 }
