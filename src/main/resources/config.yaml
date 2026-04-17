@@ -1,0 +1,13 @@
+islandConfig:
+  size: 10
+  seed: 488567489565351
+  noiseCorrelation: 10
+
+  biomeConfig:
+    scale: 0.85
+    waterPercentage: 0.2
+    fieldPercentage: 0.8
+
+  surfaceConfig:
+    rockPercentage: 0.2
+

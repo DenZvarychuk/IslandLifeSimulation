@@ -1,4 +1,4 @@
-package main.java.org.island.playground;
+package org.island.playground;
 
 public enum SurfaceType {
     GRASS, ROCK, SAND, WATER

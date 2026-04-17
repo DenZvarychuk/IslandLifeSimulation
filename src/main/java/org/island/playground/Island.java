@@ -1,32 +1,42 @@
-package main.java.org.island.playground;
+package org.island.playground;
 
-import main.java.org.island.playground.generators.BiomeGenerator;
-import main.java.org.island.playground.generators.SurfaceGenerator;
+import org.island.config.BiomeConfig;
+import org.island.config.IslandConfig;
+import org.island.config.SimulationConfig;
+import org.island.playground.generators.BiomeGenerator;
+import org.island.playground.generators.SurfaceGenerator;
 
 public class Island {
-    private final int NOISE_CORRELATION = 10;
+    private final int noiseCorrelation;
     private final int size;
     private final long seed;
     private final Location[][] location;
     private int noiseScale;
+    private IslandConfig islandConfig;
+
 
     // TODO move Biomes and Surface generation to Generator
-    public Island(int size, long seed) {
-        this.size = size;
-        this.seed = seed;
+    public Island(SimulationConfig config) {
+        this.islandConfig = config.getIslandConfig();
+        this.size = islandConfig.getSize();
+        this.seed = islandConfig.getSeed();
+        this.noiseCorrelation = config.getIslandConfig().getNoiseCorrelation();
+
         parseSeed();
+
         location = new Location[size][size];
         initLocations();
+
         generateBiomesAndSurfaces();
     }
 
     private void generateBiomesAndSurfaces() {
-        new BiomeGenerator().generate(location, size, noiseScale, seed);
-        new SurfaceGenerator().generate(location, size, seed);
+        new BiomeGenerator(islandConfig).generate(location, size, noiseScale, seed);
+        new SurfaceGenerator(islandConfig).generate(location, size, seed);
     }
 
     private void parseSeed() {
-        noiseScale = (int)(seed % 10) * NOISE_CORRELATION;
+        noiseScale = (int)(seed % 10) * noiseCorrelation;
     }
 
     private void initLocations() {
