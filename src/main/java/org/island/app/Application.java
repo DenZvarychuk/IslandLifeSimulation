@@ -1,13 +1,19 @@
-package main.java.org.island.app;
+package org.island.app;
 
-import main.java.org.island.playground.Island;
+import org.island.config.ConfigLoader;
+import org.island.config.SimulationConfig;
+import org.island.playground.Island;
 
 public class Application {
 
     private Island island;
+    private SimulationConfig config;
 
     public void run(){
-        island = new Island(10, 488567489565351L);
+
+        config = ConfigLoader.load();
+
+        island = new Island(config);
         System.out.println(island.getIslandMapCLI());
         // TODO generate animals
         // TODO split island to tiles 10x10 or something

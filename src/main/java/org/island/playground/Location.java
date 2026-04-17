@@ -1,4 +1,4 @@
-package main.java.org.island.playground;
+package org.island.playground;
 
 public class Location {
     private final int x;

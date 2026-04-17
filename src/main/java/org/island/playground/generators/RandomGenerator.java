@@ -1,4 +1,4 @@
-package main.java.org.island.playground.generators;
+package org.island.playground.generators;
 
 public class RandomGenerator {
     public static double generate(int x, int y, long seed) {

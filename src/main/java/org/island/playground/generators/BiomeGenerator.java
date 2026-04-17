@@ -1,12 +1,19 @@
-package main.java.org.island.playground.generators;
+package org.island.playground.generators;
 
-import main.java.org.island.playground.BiomeType;
-import main.java.org.island.playground.Location;
+import org.island.config.IslandConfig;
+import org.island.playground.BiomeType;
+import org.island.playground.Location;
 
 public class BiomeGenerator {
-    private final double SCALE = 0.85;
-    private final double WATER_PERCENTAGE = 0.2;
-    private final double FIELD_PERCENTAGE = 0.8;
+    private double scale;
+    private double waterPer;
+    private double fieldPercentage;
+
+    public BiomeGenerator(IslandConfig islandConfig) {
+        this.scale = islandConfig.getBiomeConfig().getScale();
+        this.waterPer = islandConfig.getBiomeConfig().getWaterPercentage();
+        this.fieldPercentage = islandConfig.getBiomeConfig().getFieldPercentage();
+    }
 
     public void generate(Location[][] location, int size, int noiseScale, long seed) {
         for (int x = 0; x < size; x++) {
@@ -18,7 +25,7 @@ public class BiomeGenerator {
                 boolean leftSide = y < 1;
                 boolean rightSide = y >= size - 1;
 
-                double v = noise(x * SCALE, y * SCALE, noiseScale, seed);
+                double v = noise(x * scale, y * scale, noiseScale, seed);
 
                 // TODO make WATER around Island smoother using Circle
                 if (top || bottom || leftSide || rightSide)
@@ -62,8 +69,8 @@ public class BiomeGenerator {
     }
 
     private BiomeType mapToBiome(double v) {
-        if (v < WATER_PERCENTAGE) return BiomeType.WATER;
-        if (v < FIELD_PERCENTAGE) return BiomeType.FIELD;
+        if (v < waterPer) return BiomeType.WATER;
+        if (v < fieldPercentage) return BiomeType.FIELD;
         return BiomeType.FOREST;
     }
 }
