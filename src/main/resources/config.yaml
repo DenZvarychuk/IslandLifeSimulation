@@ -11,24 +11,20 @@ islandConfig:
   surfaceConfig:
     rockPercentage: 0.2
 
-#
-#entityConfig:
-#  animalConfig:
-#
-#    -WOLF:
-#      weight: 50
-#      maxOnLocation: 30
-#      moveSpeed: 3
-#      fullnessLimit: 8
-#      activityCutoff: 1
-#
-#    -RABBIT:
-#      weight: 2
-#      maxOnLocation: 150
-#      moveSpeed: 2
-#      fullnessLimit: 0.45
-#      activityCutoff: 0.1
-#
+entitiesConfig:
+  animalConfig:
+    WOLF:
+      weight: 50
+      maxOnLocation: 30
+      speed: 3
+      maxSatiety: 8
+
+    RABBIT:
+      weight: 2
+      maxOnLocation: 150
+      speed: 2
+      maxSatiety: 0.45
+
 #  plantConfig:
 #    -TREE:
 #      weight: 1

@@ -14,7 +14,10 @@ public class Application {
         config = ConfigLoader.load();
 
         island = new Island(config);
-        System.out.println(island.getIslandMapCLI());
+        island.generateBiomesAndSurfaces();
+        island.generateAnimals();
+
+        System.out.println(island.getEntitiesInAllLocByCount());
         // TODO generate animals
         // TODO split island to tiles 10x10 or something
         // TODO behaviour tasks on Tiles
