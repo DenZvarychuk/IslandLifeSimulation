@@ -1,8 +1,6 @@
 package org.island.playground;
 
-import org.island.config.BiomeConfig;
-import org.island.config.IslandConfig;
-import org.island.config.SimulationConfig;
+import org.island.config.*;
 import org.island.playground.generators.BiomeGenerator;
 import org.island.playground.generators.SurfaceGenerator;
 
@@ -10,14 +8,18 @@ public class Island {
     private final int noiseCorrelation;
     private final int size;
     private final long seed;
-    private final Location[][] location;
     private int noiseScale;
+
+    private final Location[][] location;
+
     private IslandConfig islandConfig;
+    private EntitiesConfig entitiesConfig;
 
 
     // TODO move Biomes and Surface generation to Generator
     public Island(SimulationConfig config) {
         this.islandConfig = config.getIslandConfig();
+        this.entitiesConfig = config.getEntitiesConfig();
         this.size = islandConfig.getSize();
         this.seed = islandConfig.getSeed();
         this.noiseCorrelation = config.getIslandConfig().getNoiseCorrelation();
@@ -28,6 +30,11 @@ public class Island {
         initLocations();
 
         generateBiomesAndSurfaces();
+
+        generateAnimalsAndPlants();
+    }
+
+    private void generateAnimalsAndPlants() {
     }
 
     private void generateBiomesAndSurfaces() {

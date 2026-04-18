@@ -1,8 +1,14 @@
 package org.island.playground;
 
+import org.island.entity.Entity;
+
+import java.util.List;
+
 public class Location {
     private final int x;
     private final int y;
+
+    private List<Entity> entities;
 
     private BiomeType biome;
     private SurfaceType surface;
