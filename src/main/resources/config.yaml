@@ -13,18 +13,18 @@ islandConfig:
 
 entitiesConfig:
   animalConfig:
-    wolf:
+    WOLF:
       weight: 50
       maxOnLocation: 30
       speed: 3
       maxSatiety: 8
 
-#    -RABBIT:
-#      weight: 2
-#      maxOnLocation: 150
-#      moveSpeed: 2
-#      fullnessLimit: 0.45
-#
+    RABBIT:
+      weight: 2
+      maxOnLocation: 150
+      speed: 2
+      maxSatiety: 0.45
+
 #  plantConfig:
 #    -TREE:
 #      weight: 1
