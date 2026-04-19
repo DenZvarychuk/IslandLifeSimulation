@@ -40,7 +40,7 @@ public class Island {
         this.seed = islandConfig.getSeed();
         this.noiseCorrelation = islandConfig.getNoiseCorrelation();
         this.animalFactory = new AnimalFactory(entitiesConfig.getAnimalConfig());
-        this.plantFactory = new PlantFactory(entitiesConfig.getPlantConfig());
+        this.plantFactory = new PlantFactory(entitiesConfig.getPlantConfig(), seed);
         parseSeed();
         location = new Location[size][size];
         initLocations();
@@ -62,9 +62,7 @@ public class Island {
                     plantFactory.createPlant(plantType, loc);
                 }
             }
-
         }
-
         System.out.println("Plants are generated!");
     }
 
@@ -154,7 +152,7 @@ public class Island {
                                     Collectors.counting()
                             ));
 
-                    result.append(String.format("Location: x=%d, y=%d: ", x, y));
+                    result.append(String.format("Location: x=%d, y=%d, Biome: %s, Surface: %s, Entities: ", x, y, loc.getBiome().name(), loc.getSurface().name()));
                     counts.forEach((type, count) ->
                             result.append(type).append(" count: ").append(count).append(", ")
                     );

@@ -4,12 +4,14 @@ import org.island.playground.BiomeType;
 import org.island.playground.SurfaceType;
 
 import java.util.List;
+import java.util.Map;
 
 public class PlantConfig {
     private double weight;
     private int maxOnLocation;
-    List<BiomeType> allowedBiomes;
-    List<SurfaceType> allowedSurfaces;
+    private List<BiomeType> allowedBiomes;
+    private List<SurfaceType> allowedSurfaces;
+    private Map<String, EntityDensity> density;
 
     public double getWeight() {
         return weight;
@@ -41,5 +43,13 @@ public class PlantConfig {
 
     public void setAllowedSurfaces(List<SurfaceType> allowedSurfaces) {
         this.allowedSurfaces = allowedSurfaces;
+    }
+
+    public Map<String, EntityDensity> getDensity() {
+        return density;
+    }
+
+    public void setDensity(Map<String, EntityDensity> density) {
+        this.density = density;
     }
 }
