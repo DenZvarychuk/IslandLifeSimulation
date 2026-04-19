@@ -23,7 +23,7 @@ public class SurfaceGenerator {
                     continue;
                 }
 
-                if (isNextToWater(x, y, size, location)){
+                if (isNextToWater(x, y, size, location) && loc.getBiome() != BiomeType.FOREST){
                     loc.setSurface(SurfaceType.SAND);
                 } else {
                     if (v < rockPercentage) loc.setSurface(SurfaceType.ROCK);
@@ -34,9 +34,10 @@ public class SurfaceGenerator {
         }
     }
 
+    // TODO check diagonals
     private boolean isNextToWater(int x, int y, int size, Location[][] location) {
-        int[][] directons = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
-        for (int[] direction : directons) {
+        int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+        for (int[] direction : directions) {
             int nx = x + direction[0];
             int ny = y + direction[1];
             if (nx >= 0 && nx < size &&

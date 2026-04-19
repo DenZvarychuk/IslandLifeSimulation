@@ -15,20 +15,29 @@ entitiesConfig:
   animalConfig:
     WOLF:
       weight: 50
-      maxOnLocation: 30
+      maxOnLocation: 10
       speed: 3
       maxSatiety: 8
 
     RABBIT:
       weight: 2
-      maxOnLocation: 150
+      maxOnLocation: 20
       speed: 2
       maxSatiety: 0.45
 
-#  plantConfig:
-#    -TREE:
-#      weight: 1
-#      maxOnLocation: 200
-#    -GRASS:
-#      weight: 0.1
-#      maxOnLocation: 200
+  plantConfig:
+    TREE:
+      weight: 1
+      maxOnLocation: 20
+      allowedBiomes: [ FORREST, FIELD ]
+      allowedSurfaces: [ GRASS, ROCK ]
+    GRASS:
+      weight: 0.1
+      maxOnLocation: 100
+      allowedBiomes: [ FORREST, FIELD ]
+      allowedSurfaces: [ GRASS, ROCK ]
+    BUSH:
+      weight: 0.3
+      maxOnLocation: 30
+      allowedBiomes: [ FORREST, FIELD ]
+      allowedSurfaces: [ GRASS, SAND, ROCK ]

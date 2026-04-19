@@ -15,6 +15,7 @@ public class Application {
 
         island = new Island(config);
         island.generateBiomesAndSurfaces();
+        island.generatePlants();
         island.generateAnimals();
 
         System.out.println(island.getEntitiesInAllLocByCount());

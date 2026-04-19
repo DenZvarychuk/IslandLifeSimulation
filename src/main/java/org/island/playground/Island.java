@@ -6,6 +6,8 @@ import org.island.config.SimulationConfig;
 import org.island.entity.Entity;
 import org.island.entity.animals.AnimalType;
 import org.island.entity.factory.AnimalFactory;
+import org.island.entity.factory.PlantFactory;
+import org.island.entity.plants.PlantType;
 import org.island.playground.generators.BiomeGenerator;
 import org.island.playground.generators.SurfaceGenerator;
 
@@ -26,6 +28,7 @@ public class Island {
     private IslandConfig islandConfig;
     private EntitiesConfig entitiesConfig;
     private AnimalFactory animalFactory;
+    private PlantFactory plantFactory;
 
     public Island(SimulationConfig config) {
 
@@ -37,6 +40,7 @@ public class Island {
         this.seed = islandConfig.getSeed();
         this.noiseCorrelation = islandConfig.getNoiseCorrelation();
         this.animalFactory = new AnimalFactory(entitiesConfig.getAnimalConfig());
+        this.plantFactory = new PlantFactory(entitiesConfig.getPlantConfig());
         parseSeed();
         location = new Location[size][size];
         initLocations();
@@ -46,6 +50,22 @@ public class Island {
     private void initConfig(SimulationConfig config) {
         this.islandConfig = config.getIslandConfig();
         this.entitiesConfig = config.getEntitiesConfig();
+    }
+
+    public void generatePlants() {
+        System.out.println("Generating Plants...");
+
+        for (int x = 0; x < size; x++) {
+            for (int y = 0; y < size; y++) {
+                Location loc = location[x][y];
+                for (PlantType plantType : PlantType.values()) {
+                    plantFactory.createPlant(plantType, loc);
+                }
+            }
+
+        }
+
+        System.out.println("Plants are generated!");
     }
 
     public void generateAnimals() {
@@ -159,7 +179,6 @@ public class Island {
         //TODO create a new statistic method
         for (int x = 0; x < size; x++) {
             for (int y = 0; y < size; y++) {
-//                sb.append(getBiome(x, y) + " ");
                 sb.append("(x" + x + ", y" + y + ") b: " +
                         getBiome(x, y) + ", s: " +
                         getSurface(x, y) + " | ");
@@ -169,5 +188,4 @@ public class Island {
 
         return sb.toString();
     }
-
 }
