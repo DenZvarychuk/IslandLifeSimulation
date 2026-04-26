@@ -27,13 +27,13 @@ entitiesConfig:
     WOLF:
       weight: 50
       maxOnLocation: 10
-      speed: 3
+      moveSteps: 3
       maxSatiety: 8
 
     RABBIT:
       weight: 2
       maxOnLocation: 20
-      speed: 2
+      moveSteps: 2
       maxSatiety: 0.45
 
   plantConfig:

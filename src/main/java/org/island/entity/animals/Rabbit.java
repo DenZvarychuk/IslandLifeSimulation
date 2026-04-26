@@ -13,13 +13,8 @@ public class Rabbit extends Animal{
     }
 
     @Override
-    public void move() {
-
-    }
-
-    @Override
     public void eat() {
-
+        
     }
 
     @Override

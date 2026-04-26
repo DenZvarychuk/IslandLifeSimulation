@@ -117,11 +117,17 @@ public class Island {
         return location[x][y].getSurface();
     }
 
+    public int getSize() {
+        return size;
+    }
+
     public List<?> getEntityByLocation(int x, int y) {
         return location[x][y].getEntities();
     }
 
+
     // Statistics
+
     // TODO move all statistics to separate class
 
     public Map<String, List<?>> getEntitiesInAllLocByList() {

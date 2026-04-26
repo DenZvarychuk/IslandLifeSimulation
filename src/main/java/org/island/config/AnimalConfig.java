@@ -3,7 +3,7 @@ package org.island.config;
 public class AnimalConfig {
     private double weight;
     private int maxOnLocation;
-    private double speed;
+    private int moveSteps;
     private double maxSatiety;
 
     public double getWeight() {
@@ -22,12 +22,12 @@ public class AnimalConfig {
         this.maxOnLocation = maxOnLocation;
     }
 
-    public double getSpeed() {
-        return speed;
+    public int getMoveSteps() {
+        return moveSteps;
     }
 
-    public void setSpeed(double speed) {
-        this.speed = speed;
+    public void setMoveSteps(int moveSteps) {
+        this.moveSteps = moveSteps;
     }
 
     public double getMaxSatiety() {
