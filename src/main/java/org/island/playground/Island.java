@@ -4,6 +4,7 @@ import org.island.config.EntitiesConfig;
 import org.island.config.IslandConfig;
 import org.island.config.SimulationConfig;
 import org.island.entity.Entity;
+import org.island.entity.animals.Animal;
 import org.island.entity.animals.AnimalType;
 import org.island.entity.factory.AnimalFactory;
 import org.island.entity.factory.PlantFactory;
@@ -11,10 +12,7 @@ import org.island.entity.plants.PlantType;
 import org.island.playground.generators.BiomeGenerator;
 import org.island.playground.generators.SurfaceGenerator;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Island {
@@ -119,6 +117,24 @@ public class Island {
 
     public int getSize() {
         return size;
+    }
+
+    public List<Animal> getAllAnimals() {
+        List<Animal> animals = new ArrayList<>();
+        // Iterate through all locations
+        for (int x = 0; x < size; x++) {
+            for (int y = 0; y < size; y++) {
+                Location location = getLocation(x, y);
+
+                // Filter only animals
+                for (Entity entity : location.getEntities()) {
+                    if (entity instanceof Animal) {
+                        animals.add((Animal) entity);
+                    }
+                }
+            }
+        }
+        return animals;
     }
 
     public List<?> getEntityByLocation(int x, int y) {

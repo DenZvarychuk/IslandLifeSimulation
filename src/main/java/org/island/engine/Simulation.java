@@ -3,33 +3,44 @@ package org.island.engine;
 import org.island.engine.movements.MoveResult;
 import org.island.engine.movements.MovementExecutor;
 import org.island.playground.Island;
+import org.island.statistics.SimulationStatistics;
 
 import java.util.List;
 
 public class Simulation {
 
     // TODO move it into config
-    private static final int SIMULATION_STEP_COUNT = 10;
-    private static int step = 0;
+    private static final int SIMULATION_CYCLE_COUNT = 20;
+    private static int cycle = 0;
     private MovementExecutor movementExecutor;
+    private SimulationStatistics statistics;
 
-    public Simulation() {
-        this.movementExecutor = new MovementExecutor();
+    public Simulation(SimulationStatistics statistics) {
+        this.statistics = statistics;
+        this.movementExecutor = new MovementExecutor(statistics);
     }
 
     public void start(Island island) throws InterruptedException {
         System.out.println("=== Simulation Starting ===\n");
 
         while (hasSteps()){
-            System.out.println("----- Step " + step + "-----");
+            System.out.println("----- Step " + cycle + "-----");
 
-            List<MoveResult> moveResults = movementExecutor.executeMovementTurn(island);
+            // actions
+            List<MoveResult> moveResults = movementExecutor.calculateMove(island);
 
+            for (MoveResult result : moveResults) {
+                movementExecutor.applyMove(result);
+            }
+
+
+            // stats
             printMovementStats(moveResults);
-
             System.out.println(island.getEntitiesInAllLocByCount());
 
-            step++;
+
+            // increment
+            cycle++;
             Thread.sleep(1000);
         }
 
@@ -39,7 +50,7 @@ public class Simulation {
 
     private static boolean hasSteps() {
 
-        return step < SIMULATION_STEP_COUNT;
+        return cycle < SIMULATION_CYCLE_COUNT;
     }
 
     private void printMovementStats(List<MoveResult> results) {
@@ -58,5 +69,7 @@ public class Simulation {
         System.out.println();
     }
 
-
+    public static int getSimulationCycle() {
+        return cycle;
+    }
 }

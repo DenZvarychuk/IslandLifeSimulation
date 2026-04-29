@@ -8,9 +8,6 @@ import org.island.entity.Entity;
 import org.island.playground.Island;
 import org.island.playground.Location;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public abstract class Animal extends Entity<AnimalType> {
 
     protected double weight;
@@ -18,7 +15,10 @@ public abstract class Animal extends Entity<AnimalType> {
     protected double energy;
     protected double maxSatiety;
     protected double minSatiety;
+    protected double satiety;
     protected int maxOnLocation;
+    // TODO reconsider energy
+    protected double moveCost;
 
     protected MovementStrategy movementStrategy;
 
@@ -27,24 +27,33 @@ public abstract class Animal extends Entity<AnimalType> {
         this.weight = config.getWeight();
         this.moveSteps = config.getMoveSteps();
         this.maxSatiety = config.getMaxSatiety();
-        this.energy = config.getMaxSatiety();
         this.minSatiety = config.getMaxSatiety() / 2;
+        this.energy = config.getMaxSatiety();
+        this.satiety = config.getMaxSatiety();
         this.maxOnLocation = config.getMaxOnLocation();
+        this.moveCost = config.getMaxSatiety() * 0.1;
         this.movementStrategy = new LandStrategy();
     }
 
-    public MoveResult calculateMove(Island island) {
+    public MoveResult move(Island island) {
         if (moveSteps <= 0 || movementStrategy == null) {
             Location current = island.getLocation(this.x, this.y);
             return new MoveResult(this, current, current, 0, false);
         }
-
         return movementStrategy.calculateMove(this, island);
     }
 
     public abstract void eat();
 
     public abstract void reproduce();
+
+    public boolean shouldExist() {
+        return energy > 0 && maxSatiety > 0;
+    }
+
+    public void markAsDead() {
+        this.isExist = false;
+    }
 
     public int getMoveSteps() {
         return moveSteps;
@@ -54,4 +63,27 @@ public abstract class Animal extends Entity<AnimalType> {
         this.movementStrategy = strategy;
     }
 
+    public double getEnergy() {
+        return energy;
+    }
+
+    public void setEnergy(double energy) {
+        this.energy = energy;
+    }
+
+    public double getMaxSatiety() {
+        return maxSatiety;
+    }
+
+    public double getSatiety() {
+        return satiety;
+    }
+
+    public void setSatiety(double satiety) {
+        this.satiety = satiety;
+    }
+
+    public double getMoveCost() {
+        return moveCost;
+    }
 }

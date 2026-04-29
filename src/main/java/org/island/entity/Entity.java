@@ -53,7 +53,4 @@ public abstract class Entity<T extends EntityType> {
         return isExist;
     }
 
-    public void setExist(boolean exist) {
-        isExist = exist;
-    }
 }

@@ -5,12 +5,15 @@ import org.island.config.SimulationConfig;
 import org.island.engine.Simulation;
 import org.island.engine.movements.MovementExecutor;
 import org.island.playground.Island;
+import org.island.statistics.SimulationStatistics;
 
 public class Application {
 
     private Island island;
     private SimulationConfig config;
-    private Simulation simulation = new Simulation();
+    private SimulationStatistics statistics = new SimulationStatistics();
+    private Simulation simulation = new Simulation(statistics);
+
 
     public void run() {
 
@@ -23,6 +26,8 @@ public class Application {
         catch (Exception e){
             System.out.println(e.getMessage());
         }
+
+        statistics.printFullReport();
 
         // TODO behaviour tasks on Tiles
     }

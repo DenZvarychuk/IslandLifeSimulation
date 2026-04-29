@@ -20,12 +20,11 @@ public class AnimalFactory {
         AnimalConfig config = animalConfig.get(type);
 
         //TODO add Exception
-        if (config == null) return null;
 
         return switch (type) {
             case AnimalType.WOLF -> new Wolf(config, location);
             case AnimalType.RABBIT -> new Rabbit(config, location);
-            default -> null;
+            case null, default -> null;
         };
 
     }
