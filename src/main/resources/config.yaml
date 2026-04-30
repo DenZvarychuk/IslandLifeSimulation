@@ -11,28 +11,59 @@ islandConfig:
   surfaceConfig:
     rockPercentage: 0.2
 
-#
-#entityConfig:
-#  animalConfig:
-#
-#    -WOLF:
-#      weight: 50
-#      maxOnLocation: 30
-#      moveSpeed: 3
-#      fullnessLimit: 8
-#      activityCutoff: 1
-#
-#    -RABBIT:
-#      weight: 2
-#      maxOnLocation: 150
-#      moveSpeed: 2
-#      fullnessLimit: 0.45
-#      activityCutoff: 0.1
-#
-#  plantConfig:
-#    -TREE:
-#      weight: 1
-#      maxOnLocation: 200
-#    -GRASS:
-#      weight: 0.1
-#      maxOnLocation: 200
+entitiesConfig:
+
+  # Density for Plants and Animals
+  #    VERY_HIGH  80-100% of maxOnLocation
+  #    HIGH       60-80%
+  #    MEDIUM     40-60%
+  #    LOW        20-40%
+  #    VERY_LOW   5-20%
+  #    NONE       0%
+  #
+
+
+  animalConfig:
+    WOLF:
+      weight: 50
+      maxOnLocation: 10
+      moveSteps: 3
+      maxSatiety: 8
+
+    RABBIT:
+      weight: 2
+      maxOnLocation: 20
+      moveSteps: 2
+      maxSatiety: 0.45
+
+  plantConfig:
+    TREE:
+      weight: 1
+      maxOnLocation: 20
+      allowedBiomes: [ FOREST, FIELD ]
+      allowedSurfaces: [ SOIL, ROCK ]
+      density:
+        FOREST_SOIL: VERY_HIGH
+        FOREST_ROCK: HIGH
+        FIELD_SOIL: VERY_LOW
+        FIELD_ROCK: NONE
+
+    GRASS:
+      weight: 0.1
+      maxOnLocation: 100
+      allowedBiomes: [ FOREST, FIELD ]
+      allowedSurfaces: [ SOIL ]
+      density:
+        FOREST_SOIL: VERY_HIGH
+        FIELD_SOIL: HIGH
+
+    BUSH:
+      weight: 0.3
+      maxOnLocation: 30
+      allowedBiomes: [ FOREST, FIELD ]
+      allowedSurfaces: [ SOIL, SAND, ROCK ]
+      density:
+        FOREST_SOIL: HIGH
+        FIELD_SOIL: MEDIUM
+        FIELD_SAND: MEDIUM
+        FIELD_ROCK: LOW
