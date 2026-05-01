@@ -1,6 +1,9 @@
 package org.island.entity.animals;
 
 import org.island.config.AnimalConfig;
+import org.island.engine.eating.EatResult;
+import org.island.engine.eating.EatStrategy;
+import org.island.engine.eating.HerbivoreEatStrategy;
 import org.island.engine.movements.LandStrategy;
 import org.island.engine.movements.MoveResult;
 import org.island.engine.movements.MovementStrategy;
@@ -21,6 +24,7 @@ public abstract class Animal extends Entity<AnimalType> {
     protected double moveCost;
 
     protected MovementStrategy movementStrategy;
+    protected EatStrategy eatStrategy;
 
     public Animal(AnimalConfig config, AnimalType type) {
         super(type);
@@ -33,6 +37,7 @@ public abstract class Animal extends Entity<AnimalType> {
         this.maxOnLocation = config.getMaxOnLocation();
         this.moveCost = config.getMaxSatiety() * 0.1;
         this.movementStrategy = new LandStrategy();
+        this.eatStrategy = new HerbivoreEatStrategy();
     }
 
     public MoveResult move(Island island) {
@@ -43,7 +48,13 @@ public abstract class Animal extends Entity<AnimalType> {
         return movementStrategy.calculateMove(this, island);
     }
 
-    public abstract void eat();
+    public EatResult eat(Island island) {
+        Location location = island.getLocation(this.x, this.y);
+        if (satiety < minSatiety) {
+            return eatStrategy.calculateEat(this, island);
+        }
+        return new EatResult(this, null, location, false);
+    };
 
     public abstract void reproduce();
 

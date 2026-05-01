@@ -58,7 +58,7 @@ public class Simulation {
         int totalSteps = 0;
 
         for (MoveResult result : results) {
-            if (result.isSuccessful()) {
+            if (result.isMoveSuccessful()) {
                 totalMoved++;
                 totalSteps += result.getStepsTaken();
             }

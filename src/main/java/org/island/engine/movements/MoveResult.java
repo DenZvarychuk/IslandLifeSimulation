@@ -29,10 +29,10 @@ public class MoveResult {
     public Location getStartLocation() {return startLocation;}
     public Location getEndLocation() {return endLocation;}
     public List<Location> getPath() {return path;}
-    public boolean wasSuccessful() {return successful;}
+    public boolean wasSuccessfully() {return successful;}
     public int getStepsTaken() {return stepsTaken;}
 
-    public boolean isSuccessful() {
+    public boolean isMoveSuccessful() {
         return !startLocation.equals(endLocation);
     }
 }

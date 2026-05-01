@@ -12,10 +12,6 @@ public class Rabbit extends Animal{
         location.addEntity(this);
     }
 
-    @Override
-    public void eat() {
-        
-    }
 
     @Override
     public void reproduce() {

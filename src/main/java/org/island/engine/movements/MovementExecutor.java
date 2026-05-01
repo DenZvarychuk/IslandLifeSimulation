@@ -33,7 +33,7 @@ public class MovementExecutor {
     }
 
     public void applyMove(MoveResult result) {
-        if (!result.isSuccessful()) {
+        if (!result.isMoveSuccessful()) {
             return;
         }
 
