@@ -29,12 +29,21 @@ entitiesConfig:
       maxOnLocation: 10
       moveSteps: 3
       maxSatiety: 8
+      diet:
+        edibleAnimals:
+          RABBIT: 0.5
+        ediblePlants: {}
 
     RABBIT:
       weight: 2
       maxOnLocation: 20
       moveSteps: 2
       maxSatiety: 0.45
+      diet:
+        edibleAnimals: {}
+        ediblePlants:
+          GRASS: 1
+          BUSH: 0.8
 
   plantConfig:
     TREE:

@@ -17,9 +17,4 @@ public class Rabbit extends Animal{
     public void reproduce() {
 
     }
-
-    @Override
-    public void update() {
-
-    }
 }

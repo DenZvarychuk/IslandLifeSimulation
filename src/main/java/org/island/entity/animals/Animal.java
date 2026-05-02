@@ -1,12 +1,13 @@
 package org.island.entity.animals;
 
 import org.island.config.AnimalConfig;
-import org.island.engine.eating.EatResult;
-import org.island.engine.eating.EatStrategy;
-import org.island.engine.eating.HerbivoreEatStrategy;
-import org.island.engine.movements.LandStrategy;
-import org.island.engine.movements.MoveResult;
-import org.island.engine.movements.MovementStrategy;
+import org.island.config.DietConfig;
+import org.island.engine.actions.eating.EatResult;
+import org.island.engine.actions.eating.EatStrategy;
+import org.island.engine.actions.eating.AnimalConfigEatStrategy;
+import org.island.engine.actions.movements.LandStrategy;
+import org.island.engine.actions.movements.MoveResult;
+import org.island.engine.actions.movements.MovementStrategy;
 import org.island.entity.Entity;
 import org.island.playground.Island;
 import org.island.playground.Location;
@@ -21,13 +22,15 @@ public abstract class Animal extends Entity<AnimalType> {
     protected double satiety;
     protected int maxOnLocation;
     // TODO reconsider energy
-    protected double moveCost;
+    protected double actionCost;
 
+    private final DietConfig diet;
     protected MovementStrategy movementStrategy;
     protected EatStrategy eatStrategy;
 
     public Animal(AnimalConfig config, AnimalType type) {
         super(type);
+        this.diet = config.getDiet();
         this.weight = config.getWeight();
         this.moveSteps = config.getMoveSteps();
         this.maxSatiety = config.getMaxSatiety();
@@ -35,9 +38,9 @@ public abstract class Animal extends Entity<AnimalType> {
         this.energy = config.getMaxSatiety();
         this.satiety = config.getMaxSatiety();
         this.maxOnLocation = config.getMaxOnLocation();
-        this.moveCost = config.getMaxSatiety() * 0.1;
+        this.actionCost = config.getMaxSatiety() * 0.1;
         this.movementStrategy = new LandStrategy();
-        this.eatStrategy = new HerbivoreEatStrategy();
+        this.eatStrategy = new AnimalConfigEatStrategy();
     }
 
     public MoveResult move(Island island) {
@@ -50,7 +53,8 @@ public abstract class Animal extends Entity<AnimalType> {
 
     public EatResult eat(Island island) {
         Location location = island.getLocation(this.x, this.y);
-        if (satiety < minSatiety) {
+        if (satiety <= minSatiety) {
+            System.out.println(this.getId() + " is starving");
             return eatStrategy.calculateEat(this, island);
         }
         return new EatResult(this, null, location, false);
@@ -59,11 +63,7 @@ public abstract class Animal extends Entity<AnimalType> {
     public abstract void reproduce();
 
     public boolean shouldExist() {
-        return energy > 0 && maxSatiety > 0;
-    }
-
-    public void markAsDead() {
-        this.isExist = false;
+        return satiety > 0;
     }
 
     public int getMoveSteps() {
@@ -94,7 +94,15 @@ public abstract class Animal extends Entity<AnimalType> {
         this.satiety = satiety;
     }
 
-    public double getMoveCost() {
-        return moveCost;
+    public double getActionCost() {
+        return actionCost;
+    }
+
+    public DietConfig getDiet() {
+        return diet;
+    }
+
+    public double getWeight() {
+        return weight;
     }
 }

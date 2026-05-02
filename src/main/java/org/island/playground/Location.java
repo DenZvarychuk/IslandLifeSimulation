@@ -57,4 +57,9 @@ public class Location {
     public void setSurface(SurfaceType surface) {
         this.surface = surface;
     }
+
+    @Override
+    public String toString() {
+        return String.format("Location: (%d, %d)", x, y);
+    }
 }

@@ -3,7 +3,6 @@ package org.island.app;
 import org.island.config.ConfigLoader;
 import org.island.config.SimulationConfig;
 import org.island.engine.Simulation;
-import org.island.engine.movements.MovementExecutor;
 import org.island.playground.Island;
 import org.island.statistics.SimulationStatistics;
 

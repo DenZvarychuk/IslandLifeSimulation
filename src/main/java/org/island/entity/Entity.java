@@ -18,18 +18,22 @@ public abstract class Entity<T extends EntityType> {
         this.id = type + "-" + UUID.randomUUID().toString();
     }
 
+    public void markAsDead() {
+        this.isExist = false;
+    }
 
-    public abstract void update();
+    @Override
+    public String toString() {
+        return String.format("{id='%s', x=%d, y=%d} \n", id, x, y);
 
-//    @Override
-//    public String toString() {
-//        return String.format("%s{id='%s', x=%d, y=%d, exists=%s} \n",
-//                type, id, x, y, isExist);
-//
-//    }
+    }
 
     public String getType() {
         return type;
+    }
+
+    public String getId() {
+        return id;
     }
 
 

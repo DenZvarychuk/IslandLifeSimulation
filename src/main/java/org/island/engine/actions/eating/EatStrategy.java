@@ -1,4 +1,4 @@
-package org.island.engine.eating;
+package org.island.engine.actions.eating;
 
 import org.island.entity.animals.Animal;
 import org.island.playground.Island;

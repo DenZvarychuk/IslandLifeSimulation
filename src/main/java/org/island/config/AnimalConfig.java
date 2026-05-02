@@ -1,10 +1,15 @@
 package org.island.config;
 
+import org.island.entity.animals.AnimalType;
+
+import java.util.List;
+
 public class AnimalConfig {
     private double weight;
     private int maxOnLocation;
     private int moveSteps;
     private double maxSatiety;
+    private DietConfig diet;
 
     public double getWeight() {
         return weight;
@@ -36,5 +41,13 @@ public class AnimalConfig {
 
     public void setMaxSatiety(double maxSatiety) {
         this.maxSatiety = maxSatiety;
+    }
+
+    public DietConfig getDiet() {
+        return diet;
+    }
+
+    public void setDiet(DietConfig diet) {
+        this.diet = diet;
     }
 }

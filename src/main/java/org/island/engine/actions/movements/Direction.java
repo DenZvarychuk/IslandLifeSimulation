@@ -1,4 +1,4 @@
-package org.island.engine.movements;
+package org.island.engine.actions.movements;
 
 import java.util.Random;
 

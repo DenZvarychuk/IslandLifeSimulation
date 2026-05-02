@@ -22,4 +22,8 @@ public abstract class Plant extends Entity<PlantType> {
 
     public abstract void reproduce();
 
+    public double getWeight() {
+        return weight;
+    }
+
 }

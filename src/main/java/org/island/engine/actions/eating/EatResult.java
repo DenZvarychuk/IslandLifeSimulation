@@ -1,4 +1,4 @@
-package org.island.engine.eating;
+package org.island.engine.actions.eating;
 
 import org.island.entity.Entity;
 import org.island.entity.animals.Animal;
@@ -29,7 +29,7 @@ public class EatResult {
         return location;
     }
 
-    public boolean wasSuccessfully() {
+    public boolean isEatSuccessfully() {
         return successfull;
     }
 }

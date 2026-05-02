@@ -27,9 +27,4 @@ public class Bush extends Plant{
     public void reproduce() {
 
     }
-
-    @Override
-    public void update() {
-
-    }
 }

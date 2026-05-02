@@ -1,4 +1,4 @@
-package org.island.engine.movements;
+package org.island.engine.actions.movements;
 
 import org.island.entity.animals.Animal;
 import org.island.playground.Island;
@@ -17,7 +17,7 @@ public class MovementExecutor {
         this.statistics = statistics;
     }
 
-    public List<MoveResult> calculateMove(Island island) {
+    public List<MoveResult> move(Island island) {
 
         List<Animal> animals = island.getAllAnimals();
 
@@ -50,8 +50,8 @@ public class MovementExecutor {
 
         animal.setX(to.getX());
         animal.setY(to.getY());
-        animal.setEnergy(animal.getEnergy() - animal.getMoveCost());
-        animal.setSatiety(animal.getSatiety() - animal.getMoveCost());
+        animal.setEnergy(animal.getEnergy() - animal.getActionCost());
+        animal.setSatiety(animal.getSatiety() - animal.getActionCost());
 
         if (!animal.shouldExist()) {
             animal.markAsDead();
