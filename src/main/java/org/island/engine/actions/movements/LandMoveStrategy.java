@@ -5,7 +5,7 @@ import org.island.playground.Island;
 import org.island.playground.Location;
 import org.island.playground.SurfaceType;
 
-public class LandStrategy implements MovementStrategy {
+public class LandMoveStrategy implements MovementStrategy {
     //TODO move it to config
     private static final int MAX_RETRIES = 5;
 

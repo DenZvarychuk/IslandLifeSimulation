@@ -29,9 +29,10 @@ public class MoveResult {
     public Location getStartLocation() {return startLocation;}
     public Location getEndLocation() {return endLocation;}
     public List<Location> getPath() {return path;}
-    public boolean wasSuccessfully() {return successful;}
+    public boolean isSuccessful() {return successful;}
     public int getStepsTaken() {return stepsTaken;}
 
+    // TODO refactor
     public boolean isMoveSuccessful() {
         return !startLocation.equals(endLocation);
     }

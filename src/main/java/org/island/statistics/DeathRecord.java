@@ -2,17 +2,18 @@ package org.island.statistics;
 
 import org.island.engine.Simulation;
 import org.island.entity.Entity;
+import org.island.entity.EntityType;
 
 public class DeathRecord {
 
     private Entity entity;
-    private String EntityType;
+    private EntityType entityType;
     private DeathReason reason;
     private int simulationCycle;
 
     public DeathRecord(Entity entity, DeathReason reason) {
         this.entity = entity;
-        this.EntityType = entity.getType();
+        this.entityType = entity.getEntityType();
         this.reason = reason;
         this.simulationCycle = Simulation.getSimulationCycle();
     }
@@ -24,6 +25,6 @@ public class DeathRecord {
     @Override
     public String toString() {
         return String.format("%s died at cycle %d: %s",
-                EntityType, simulationCycle, reason.getDescription());
+                entityType, simulationCycle, reason.getDescription());
     }
 }

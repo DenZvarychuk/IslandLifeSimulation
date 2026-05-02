@@ -1,7 +1,5 @@
 package org.island.entity;
 
-import org.island.entity.animals.AnimalType;
-
 import java.util.UUID;
 
 public abstract class Entity<T extends EntityType> {
@@ -9,12 +7,12 @@ public abstract class Entity<T extends EntityType> {
     protected int x;
     protected int y;
     protected String id;
-    protected String type;
+    protected T type;
     protected boolean isExist;
 
     public Entity(T type){
         this.isExist = true;
-        this.type = type.toString();
+        this.type = type;
         this.id = type + "-" + UUID.randomUUID().toString();
     }
 
@@ -28,7 +26,7 @@ public abstract class Entity<T extends EntityType> {
 
     }
 
-    public String getType() {
+    public T getEntityType() {
         return type;
     }
 

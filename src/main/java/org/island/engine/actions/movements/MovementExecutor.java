@@ -24,7 +24,8 @@ public class MovementExecutor {
         List<MoveResult> moveResults = new ArrayList<>();
 
         for (Animal animal : animals) {
-            if (animal.isExist()) {
+            // TODO move it into action executor
+            if (animal.isExist() && animal.getEnergy() > 0) {
                 MoveResult result = animal.move(island);
                 moveResults.add(result);
             }

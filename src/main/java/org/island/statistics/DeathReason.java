@@ -1,7 +1,7 @@
 package org.island.statistics;
 
 public enum DeathReason {
-    STARVATION("Ran out of energy and satiety"),
+    STARVATION("Starved to death"),
     EATEN("Eaten"),
     UNKNOWN("Unknown reason");
 

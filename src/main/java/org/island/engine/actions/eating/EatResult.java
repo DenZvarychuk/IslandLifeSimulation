@@ -29,7 +29,7 @@ public class EatResult {
         return location;
     }
 
-    public boolean isEatSuccessfully() {
+    public boolean isSuccessful() {
         return successfull;
     }
 }

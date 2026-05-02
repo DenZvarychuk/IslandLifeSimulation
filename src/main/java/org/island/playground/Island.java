@@ -68,6 +68,7 @@ public class Island {
         System.out.println("Generating Animals...");
         Random random = new Random(seed);
 
+        // TODO create more animals based on biome and quantity correlation
         for (AnimalType animalType : AnimalType.values()) {
             Location loc = getRandomeLocation(random);
             for (int i = 0; i < 5; i++) {
@@ -170,7 +171,7 @@ public class Island {
                 if (!entities.isEmpty()) {
                     Map<String, Long> counts = entities.stream()
                             .collect(Collectors.groupingBy(
-                                    entity -> entity.getType().toString(),
+                                    entity -> entity.getEntityType().toString(),
                                     Collectors.counting()
                             ));
 

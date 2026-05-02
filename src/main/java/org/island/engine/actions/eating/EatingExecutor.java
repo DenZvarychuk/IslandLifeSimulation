@@ -26,7 +26,7 @@ public class EatingExecutor {
         List<EatResult> eatResults = new ArrayList<>();
 
         for (Animal animal : animals) {
-            if (animal.isExist()) {
+            if (animal.isExist() && animal.getEnergy() > 0) {
                 EatResult result = animal.eat(island);
                 eatResults.add(result);
             }
@@ -36,7 +36,7 @@ public class EatingExecutor {
     }
 
     public void applyEat(EatResult result) {
-        if (!result.isEatSuccessfully()) {
+        if (!result.isSuccessful()) {
             return;
         }
 
@@ -50,7 +50,6 @@ public class EatingExecutor {
         // set energy after trying to eat
         animal.setEnergy(animal.getEnergy() - animal.getActionCost());
         animal.setSatiety(animal.getSatiety() - animal.getActionCost());
-
         // TODO add statistics
         if (!animal.shouldExist()) {
             animal.markAsDead();
@@ -82,7 +81,8 @@ public class EatingExecutor {
             animal.setSatiety(animal.getSatiety() + weight);
         }
 
-        System.out.println(animal + " succesfully ate " + food);
+        System.out.println(animal + " successfully ate " + food +
+                " energy after eat: " + animal.getEnergy() + "; satiety level: " + animal.getSatiety());
 
     }
 

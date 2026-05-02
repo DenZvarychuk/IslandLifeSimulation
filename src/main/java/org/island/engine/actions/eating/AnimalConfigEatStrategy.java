@@ -40,10 +40,10 @@ public class AnimalConfigEatStrategy implements EatStrategy {
     private boolean canEat(Entity entity, DietConfig diet) {
         if (entity instanceof Plant) {
             Plant plant = (Plant) entity;
-            return diet.getEdiblePlants().containsKey(plant.getType());
+            return diet.getEdiblePlants().containsKey(plant.getEntityType());
         } else if (entity instanceof Animal) {
             Animal animal = (Animal) entity;
-            return diet.getEdibleAnimals().containsKey(animal.getType());
+            return diet.getEdibleAnimals().containsKey(animal.getEntityType());
         }
         return false;
     }
@@ -62,9 +62,9 @@ public class AnimalConfigEatStrategy implements EatStrategy {
         DietConfig diet = animal.getDiet();
 
         if (food instanceof Plant) {
-            return diet.getEdiblePlants().getOrDefault(food.getType(), 0.0);
+            return diet.getEdiblePlants().getOrDefault(food.getEntityType(), 0.0);
         } else if (food instanceof Animal) {
-            return diet.getEdibleAnimals().getOrDefault(food.getType(), 0.0);
+            return diet.getEdibleAnimals().getOrDefault(food.getEntityType(), 0.0);
         }
         return 0.0;
 
