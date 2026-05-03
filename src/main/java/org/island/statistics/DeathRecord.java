@@ -4,7 +4,7 @@ import org.island.engine.Simulation;
 import org.island.entity.Entity;
 import org.island.entity.EntityType;
 
-public class DeathRecord {
+public class DeathRecord implements Event {
 
     private Entity entity;
     private EntityType entityType;

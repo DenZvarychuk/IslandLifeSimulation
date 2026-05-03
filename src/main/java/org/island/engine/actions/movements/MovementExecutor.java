@@ -1,20 +1,20 @@
 package org.island.engine.actions.movements;
 
+import org.island.engine.SimulationContext;
 import org.island.entity.animals.Animal;
 import org.island.playground.Island;
 import org.island.playground.Location;
 import org.island.statistics.DeathReason;
 import org.island.statistics.DeathRecord;
-import org.island.statistics.SimulationStatistics;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MovementExecutor {
-    private SimulationStatistics statistics;
+    private SimulationContext simulationContext;
 
-    public MovementExecutor(SimulationStatistics statistics){
-        this.statistics = statistics;
+    public MovementExecutor(SimulationContext simulationContext) {
+        this.simulationContext = simulationContext;
     }
 
     public List<MoveResult> move(Island island) {
@@ -56,7 +56,7 @@ public class MovementExecutor {
 
         if (!animal.shouldExist()) {
             animal.markAsDead();
-            statistics.registerDeath(new DeathRecord(animal, DeathReason.STARVATION));
+            simulationContext.getStatistics().registerDeath(new DeathRecord(animal, DeathReason.STARVATION));
             return;
         }
         to.addEntity(animal);

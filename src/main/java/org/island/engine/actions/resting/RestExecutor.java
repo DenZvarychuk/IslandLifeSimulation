@@ -1,20 +1,20 @@
 package org.island.engine.actions.resting;
 
+import org.island.engine.SimulationContext;
 import org.island.entity.animals.Animal;
 import org.island.playground.Island;
-import org.island.statistics.SimulationStatistics;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class RestExecutor {
-    private SimulationStatistics statistics;
+    private SimulationContext simulationContext;
 
-    public RestExecutor(SimulationStatistics statistics) {
-        this.statistics = statistics;
+    public RestExecutor(SimulationContext simulationContext) {
+        this.simulationContext = simulationContext;
     }
 
-    public List<RestResult> rest(Island island){
+    public List<RestResult> rest(Island island) {
 
         List<Animal> animals = island.getAllAnimals();
         List<RestResult> restResults = new ArrayList<>();
@@ -29,7 +29,7 @@ public class RestExecutor {
         return restResults;
     }
 
-    public void applyRest(RestResult restResult){
+    public void applyRest(RestResult restResult) {
         if (!restResult.isSuccessful()) return;
 
         Animal animal = restResult.getAnimal();

@@ -1,3 +1,7 @@
+# Base simulation config
+simulationCycleCount: 30
+
+# Main Island config with Biomes and Surfaces
 islandConfig:
   size: 10
   seed: 488567489565351
@@ -11,8 +15,7 @@ islandConfig:
   surfaceConfig:
     rockPercentage: 0.2
 
-entitiesConfig:
-
+# Entity config with Animals and Plant configs
   # Density for Plants and Animals
   #    VERY_HIGH  80-100% of maxOnLocation
   #    HIGH       60-80%
@@ -20,9 +23,8 @@ entitiesConfig:
   #    LOW        20-40%
   #    VERY_LOW   5-20%
   #    NONE       0%
-  #
 
-
+entitiesConfig:
   animalConfig:
     WOLF:
       weight: 50
