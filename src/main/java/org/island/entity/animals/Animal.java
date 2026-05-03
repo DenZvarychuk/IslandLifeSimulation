@@ -2,6 +2,7 @@ package org.island.entity.animals;
 
 import org.island.config.AnimalConfig;
 import org.island.config.DietConfig;
+import org.island.engine.actions.ActionType;
 import org.island.engine.actions.eating.EatResult;
 import org.island.engine.actions.eating.EatStrategy;
 import org.island.engine.actions.eating.AnimalConfigEatStrategy;
@@ -25,8 +26,10 @@ public abstract class Animal extends Entity<AnimalType> {
     protected double minSatiety;
     protected double satiety;
     protected int maxOnLocation;
+    protected int sleepCycles = 0;
     // TODO reconsider energy
     protected double actionCost;
+
 
     private final DietConfig diet;
     protected MovementStrategy movementStrategy;
@@ -49,10 +52,6 @@ public abstract class Animal extends Entity<AnimalType> {
     }
 
     public MoveResult move(Island island) {
-        if (moveSteps <= 0 || movementStrategy == null) {
-            Location current = island.getLocation(this.x, this.y);
-            return new MoveResult(this, current, current, 0, false);
-        }
         return movementStrategy.calculateMove(this, island);
     }
 
@@ -78,15 +77,17 @@ public abstract class Animal extends Entity<AnimalType> {
             return restStrategy.calculateRest(this, island);
         }
 
-
-
-        return new RestResult(this, location, false, energy, energy);
+        return new RestResult(ActionType.NONE, this, location, false, energy, energy);
     }
 
     public abstract void reproduce();
 
     public boolean shouldExist() {
         return satiety > 0;
+    }
+
+    public boolean isSleeping() {
+        return sleepCycles > 0;
     }
 
     public int getMoveSteps() {
@@ -97,12 +98,18 @@ public abstract class Animal extends Entity<AnimalType> {
         this.movementStrategy = strategy;
     }
 
+    public MovementStrategy getMovementStrategy() {
+        return movementStrategy;
+    }
+
     public double getEnergy() {
         return energy;
     }
 
     public void setEnergy(double energy) {
-        this.energy = energy;
+        if (energy < 0) {
+            this.energy = 0;
+        } else this.energy = energy;
     }
 
     public double getMaxSatiety() {
@@ -127,5 +134,13 @@ public abstract class Animal extends Entity<AnimalType> {
 
     public double getWeight() {
         return weight;
+    }
+
+    public int getSleepCycles() {
+        return sleepCycles;
+    }
+
+    public void setSleepCycles(int cycles){
+        this.sleepCycles = cycles;
     }
 }

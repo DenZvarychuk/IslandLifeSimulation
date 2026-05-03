@@ -1,5 +1,6 @@
 package org.island.engine.actions.resting;
 
+import org.island.engine.actions.ActionType;
 import org.island.entity.animals.Animal;
 import org.island.playground.Island;
 import org.island.playground.Location;
@@ -8,6 +9,7 @@ import java.util.Random;
 
 public class IdleRestStrategy implements RestStrategy {
     private final Random random = new Random();
+    private final ActionType actionType = ActionType.REST_IDLE;
 
     @Override
     public RestResult calculateRest(Animal animal, Island island) {
@@ -20,9 +22,9 @@ public class IdleRestStrategy implements RestStrategy {
         // TODO move it into actionPicker or something
         if (random.nextDouble() < 0.5) {
             double gainedEnergy = energyBefore * 1.2;
-            return new RestResult(animal, currentLocation, true, energyBefore, gainedEnergy);
+            return new RestResult(actionType, animal, currentLocation, true, energyBefore, gainedEnergy);
         }
 
-        return new RestResult(animal, currentLocation, false, energyBefore, energyBefore);
+        return new RestResult(actionType, animal, currentLocation, false, energyBefore, energyBefore);
     }
 }

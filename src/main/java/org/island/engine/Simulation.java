@@ -7,6 +7,7 @@ import org.island.engine.actions.movements.MoveResult;
 import org.island.engine.actions.movements.MovementExecutor;
 import org.island.engine.actions.resting.RestExecutor;
 import org.island.engine.actions.resting.RestResult;
+import org.island.entity.animals.Animal;
 import org.island.playground.Island;
 
 import java.util.List;
@@ -69,7 +70,8 @@ public class Simulation {
             for (RestResult result : restResults) {
                 restExecutor.applyRest(result);
                 System.out.println(result.getAnimal() +
-                        " rested in: " + result.getLocation() +
+                        " is " + result.getActionType() +
+                        " in: " + result.getLocation() +
                         " energy before: " + result.getEnergyBefore() +
                         " energy after: " + result.getEnergyAfter());
             }
@@ -78,6 +80,15 @@ public class Simulation {
             // stats
             printActionStats(moveResults, eatResults, restResults);
             System.out.println(island.getEntitiesInAllLocByCount());
+
+            // make animal not sleeping
+            List<Animal> animals = island.getAllAnimals();
+            for (Animal animal : animals){
+                if (animal.isSleeping()){
+                    animal.setSleepCycles(animal.getSleepCycles() - 1);
+                    if (animal.getSleepCycles() == 0) System.out.println(animal.getId() + " waked up");
+                }
+            }
 
             // increment
             cycle++;

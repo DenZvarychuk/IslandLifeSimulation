@@ -1,5 +1,6 @@
 package org.island.engine.actions.resting;
 
+import org.island.engine.actions.ActionType;
 import org.island.entity.animals.Animal;
 import org.island.playground.Location;
 
@@ -9,8 +10,10 @@ public class RestResult {
     private final boolean successful;
     private final double energyBefore;
     private final double energyAfter;
+    private final ActionType actionType;
 
-    public RestResult(Animal animal, Location location, boolean successful, double energyBefore, double energyAfter) {
+    public RestResult(ActionType actionType, Animal animal, Location location, boolean successful, double energyBefore, double energyAfter) {
+        this.actionType = actionType;
         this.animal = animal;
         this.location = location;
         this.successful = true;
@@ -40,5 +43,9 @@ public class RestResult {
 
     public boolean isRestSuccessful(){
         return energyBefore != energyAfter;
+    }
+
+    public ActionType getActionType() {
+        return actionType;
     }
 }

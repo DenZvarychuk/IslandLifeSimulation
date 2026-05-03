@@ -1,5 +1,6 @@
 package org.island.engine.actions.movements;
 
+import org.island.engine.actions.ActionType;
 import org.island.entity.animals.Animal;
 import org.island.playground.Location;
 
@@ -13,8 +14,10 @@ public class MoveResult {
     private final List<Location> path;
     private final boolean successful;
     private final int stepsTaken;
+    private final ActionType actionType;
 
-    public MoveResult(Animal animal, Location start, Location end, int stepsTaken, boolean successful) {
+    public MoveResult(ActionType actionType, Animal animal, Location start, Location end, int stepsTaken, boolean successful) {
+        this.actionType = actionType;
         this.animal = animal;
         this.startLocation = start;
         this.endLocation = end;
@@ -23,17 +26,32 @@ public class MoveResult {
         this.path = new ArrayList<>();
     }
 
-    public void addPathStep(Location location) {path.add(location);}
-
-    public Animal getAnimal() {return animal;}
-    public Location getStartLocation() {return startLocation;}
-    public Location getEndLocation() {return endLocation;}
-    public List<Location> getPath() {return path;}
-    public boolean isSuccessful() {return successful;}
-    public int getStepsTaken() {return stepsTaken;}
-
+    public void addPathStep(Location location) {
+        path.add(location);
+    }
+    public Animal getAnimal() {
+        return animal;
+    }
+    public Location getStartLocation() {
+        return startLocation;
+    }
+    public Location getEndLocation() {
+        return endLocation;
+    }
+    public List<Location> getPath() {
+        return path;
+    }
+    public boolean isSuccessful() {
+        return successful;
+    }
+    public int getStepsTaken() {
+        return stepsTaken;
+    }
     // TODO refactor
     public boolean isMoveSuccessful() {
         return !startLocation.equals(endLocation);
+    }
+    public ActionType getActionType() {
+        return actionType;
     }
 }

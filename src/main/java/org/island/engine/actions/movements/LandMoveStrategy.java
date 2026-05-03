@@ -1,5 +1,6 @@
 package org.island.engine.actions.movements;
 
+import org.island.engine.actions.ActionType;
 import org.island.entity.animals.Animal;
 import org.island.playground.Island;
 import org.island.playground.Location;
@@ -8,6 +9,7 @@ import org.island.playground.SurfaceType;
 public class LandMoveStrategy implements MovementStrategy {
     //TODO move it to config
     private static final int MAX_RETRIES = 5;
+    private static final ActionType actionType = ActionType.MOVE_LAND;
 
     // TODO not to move in the same location
     // TODO consider movements for finding prey to eat
@@ -21,6 +23,7 @@ public class LandMoveStrategy implements MovementStrategy {
         int stepsTaken = 0;
 
         MoveResult result = new MoveResult(
+                actionType,
                 animal,
                 fromLocation,
                 fromLocation,
@@ -43,7 +46,7 @@ public class LandMoveStrategy implements MovementStrategy {
 
         Location finalLocation = island.getLocation(currX, currY);
 
-        return new MoveResult(animal, fromLocation, finalLocation, stepsTaken, true);
+        return new MoveResult(actionType, animal, fromLocation, finalLocation, stepsTaken, true);
     }
 
     private Location findValidLocation(int x, int y, Island island) {

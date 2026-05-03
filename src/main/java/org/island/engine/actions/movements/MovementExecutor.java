@@ -1,6 +1,7 @@
 package org.island.engine.actions.movements;
 
 import org.island.engine.SimulationContext;
+import org.island.engine.actions.ActionType;
 import org.island.entity.animals.Animal;
 import org.island.playground.Island;
 import org.island.playground.Location;
@@ -12,6 +13,8 @@ import java.util.List;
 
 public class MovementExecutor {
     private SimulationContext simulationContext;
+    private final MovementStrategy noMoveStrategy = new NoMoveStrategy();  // Reuse instance
+
 
     public MovementExecutor(SimulationContext simulationContext) {
         this.simulationContext = simulationContext;
@@ -20,17 +23,29 @@ public class MovementExecutor {
     public List<MoveResult> move(Island island) {
 
         List<Animal> animals = island.getAllAnimals();
-
         List<MoveResult> moveResults = new ArrayList<>();
 
         for (Animal animal : animals) {
             // TODO move it into action executor
-            if (animal.isExist() && animal.getEnergy() > 0) {
-                MoveResult result = animal.move(island);
-                moveResults.add(result);
-            }
+            MovementStrategy strategy = pickStrategy(animal);
+            MoveResult result = strategy.calculateMove(animal, island);
+            moveResults.add(result);
+
         }
         return moveResults;
+    }
+
+    private MovementStrategy pickStrategy(Animal animal) {
+        if (shouldAnimalMove(animal)) return animal.getMovementStrategy();
+        return noMoveStrategy;
+    }
+
+    private boolean shouldAnimalMove(Animal animal) {
+        return animal.isExist()
+                && animal.getEnergy() > 0
+                && !animal.isSleeping()
+                && animal.getMoveSteps() > 0
+                && animal.getMovementStrategy() != null;
     }
 
     public void applyMove(MoveResult result) {

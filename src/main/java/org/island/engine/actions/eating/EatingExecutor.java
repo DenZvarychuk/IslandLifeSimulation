@@ -26,7 +26,7 @@ public class EatingExecutor {
         List<EatResult> eatResults = new ArrayList<>();
 
         for (Animal animal : animals) {
-            if (animal.isExist() && animal.getEnergy() > 0) {
+            if (animal.isExist() && animal.getEnergy() > 0 && !animal.isSleeping()) {
                 EatResult result = animal.eat(island);
                 eatResults.add(result);
             }

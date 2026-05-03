@@ -20,7 +20,7 @@ public class RestExecutor {
         List<RestResult> restResults = new ArrayList<>();
 
         for (Animal animal : animals) {
-            if (animal.isExist()) {
+            if (animal.isExist() && !animal.isSleeping()) {
                 RestResult result = animal.rest(island);
                 restResults.add(result);
             }
