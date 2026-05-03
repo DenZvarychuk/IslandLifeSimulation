@@ -1,5 +1,6 @@
 package org.island.engine;
 
+import org.island.config.SimulationConfig;
 import org.island.engine.actions.eating.EatResult;
 import org.island.engine.actions.eating.EatingExecutor;
 import org.island.engine.actions.movements.MoveResult;
@@ -7,26 +8,26 @@ import org.island.engine.actions.movements.MovementExecutor;
 import org.island.engine.actions.resting.RestExecutor;
 import org.island.engine.actions.resting.RestResult;
 import org.island.playground.Island;
-import org.island.statistics.SimulationStatistics;
 
 import java.util.List;
 
 public class Simulation {
 
     // TODO move it into config
-    private static final int SIMULATION_CYCLE_COUNT = 30;
+    private static int simulationCycleCount;
     private static int cycle = 0;
 
     private MovementExecutor movementExecutor;
     private EatingExecutor eatingExecutor;
     private RestExecutor restExecutor;
-    private SimulationStatistics statistics;
+    private SimulationContext simulationContext;
 
-    public Simulation(SimulationStatistics statistics) {
-        this.statistics = statistics;
-        this.movementExecutor = new MovementExecutor(statistics);
-        this.eatingExecutor = new EatingExecutor(statistics);
-        this.restExecutor = new RestExecutor(statistics);
+    public Simulation(SimulationContext simulationContext, SimulationConfig config) {
+        this.simulationContext = simulationContext;
+        this.simulationCycleCount = config.getSimulationCycleCount();
+        this.movementExecutor = new MovementExecutor(simulationContext);
+        this.eatingExecutor = new EatingExecutor(simulationContext);
+        this.restExecutor = new RestExecutor(simulationContext);
     }
 
     public void start(Island island) throws InterruptedException {
@@ -88,7 +89,7 @@ public class Simulation {
     }
 
     private static boolean hasSimulationCycles() {
-        return cycle < SIMULATION_CYCLE_COUNT;
+        return cycle < simulationCycleCount;
     }
 
     private void printActionStats(List<MoveResult> results, List<EatResult> eatResults, List<RestResult> restResults) {

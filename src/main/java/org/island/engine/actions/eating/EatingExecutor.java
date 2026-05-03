@@ -1,5 +1,6 @@
 package org.island.engine.actions.eating;
 
+import org.island.engine.SimulationContext;
 import org.island.entity.Entity;
 import org.island.entity.animals.Animal;
 import org.island.entity.plants.Plant;
@@ -7,17 +8,16 @@ import org.island.playground.Island;
 import org.island.playground.Location;
 import org.island.statistics.DeathReason;
 import org.island.statistics.DeathRecord;
-import org.island.statistics.SimulationStatistics;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class EatingExecutor {
 
-    private SimulationStatistics statistics;
+    private SimulationContext simulationContext;
 
-    public EatingExecutor(SimulationStatistics statistics) {
-        this.statistics = statistics;
+    public EatingExecutor(SimulationContext simulationContext) {
+        this.simulationContext = simulationContext;
     }
 
     public List<EatResult> eat(Island island) {
@@ -53,13 +53,13 @@ public class EatingExecutor {
         // TODO add statistics
         if (!animal.shouldExist()) {
             animal.markAsDead();
-            statistics.registerDeath(new DeathRecord(animal, DeathReason.STARVATION));
+            simulationContext.getStatistics().registerDeath(new DeathRecord(animal, DeathReason.STARVATION));
             return;
         }
         // remove eaten entity
         food.markAsDead();
         location.removeEntity(food);
-        statistics.registerDeath(new DeathRecord(food, DeathReason.EATEN));
+        simulationContext.getStatistics().registerDeath(new DeathRecord(food, DeathReason.EATEN));
         // set satiety
         calculateNewSatiety(animal, food);
 
