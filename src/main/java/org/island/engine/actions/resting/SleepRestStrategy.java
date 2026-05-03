@@ -15,7 +15,7 @@ public class SleepRestStrategy implements RestStrategy {
 
         // TODO move it into actionPicker or something
         if (animal.getEnergy() < animal.getMaxSatiety() * 0.1){
-            double gainedEnergy = energyBefore * 1.2;
+            double gainedEnergy = animal.getMaxSatiety();
             return new RestResult(animal, currentLocation, true, energyBefore, gainedEnergy);
         }
 

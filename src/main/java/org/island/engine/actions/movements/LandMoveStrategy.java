@@ -9,6 +9,8 @@ public class LandMoveStrategy implements MovementStrategy {
     //TODO move it to config
     private static final int MAX_RETRIES = 5;
 
+    // TODO not to move in the same location
+    // TODO consider movements for finding prey to eat
     @Override
     public MoveResult calculateMove(Animal animal, Island island) {
         int currX = animal.getX();
