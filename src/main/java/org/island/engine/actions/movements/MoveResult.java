@@ -1,5 +1,6 @@
 package org.island.engine.actions.movements;
 
+import org.island.engine.actions.ActionResult;
 import org.island.engine.actions.ActionType;
 import org.island.entity.animals.Animal;
 import org.island.playground.Location;
@@ -7,51 +8,37 @@ import org.island.playground.Location;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MoveResult {
-    private final Animal animal;
-    private final Location startLocation;
+public class MoveResult extends ActionResult {
     private final Location endLocation;
     private final List<Location> path;
-    private final boolean successful;
     private final int stepsTaken;
-    private final ActionType actionType;
 
-    public MoveResult(ActionType actionType, Animal animal, Location start, Location end, int stepsTaken, boolean successful) {
-        this.actionType = actionType;
-        this.animal = animal;
-        this.startLocation = start;
+    public MoveResult(ActionType actionType, Animal animal, Location start, Location end, int stepsTaken, List<Location> path, boolean isSuccessful) {
+        super(actionType, animal, start, isSuccessful);
         this.endLocation = end;
         this.stepsTaken = stepsTaken;
-        this.successful = successful;
-        this.path = new ArrayList<>();
+        this.path = path != null ? new ArrayList<>(path) : new ArrayList<>();
     }
 
     public void addPathStep(Location location) {
         path.add(location);
     }
-    public Animal getAnimal() {
-        return animal;
-    }
-    public Location getStartLocation() {
-        return startLocation;
-    }
+
     public Location getEndLocation() {
         return endLocation;
     }
+
     public List<Location> getPath() {
         return path;
     }
-    public boolean isSuccessful() {
-        return successful;
-    }
+
     public int getStepsTaken() {
         return stepsTaken;
     }
+
     // TODO refactor
-    public boolean isMoveSuccessful() {
-        return !startLocation.equals(endLocation);
+    public boolean isMovedAtSameLocation() {
+        return baseActionLocation.equals(endLocation);
     }
-    public ActionType getActionType() {
-        return actionType;
-    }
+
 }

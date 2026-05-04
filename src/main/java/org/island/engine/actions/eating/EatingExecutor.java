@@ -1,6 +1,7 @@
 package org.island.engine.actions.eating;
 
 import org.island.engine.SimulationContext;
+import org.island.engine.actions.NoActionStrategy;
 import org.island.entity.Entity;
 import org.island.entity.animals.Animal;
 import org.island.entity.plants.Plant;
@@ -13,8 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EatingExecutor {
-
     private SimulationContext simulationContext;
+    private final NoActionStrategy noActionStrategy = new NoActionStrategy();
 
     public EatingExecutor(SimulationContext simulationContext) {
         this.simulationContext = simulationContext;
@@ -26,13 +27,27 @@ public class EatingExecutor {
         List<EatResult> eatResults = new ArrayList<>();
 
         for (Animal animal : animals) {
-            if (animal.isExist() && animal.getEnergy() > 0 && !animal.isSleeping()) {
-                EatResult result = animal.eat(island);
-                eatResults.add(result);
-            }
+            // TODO move it into action executor
+            EatStrategy strategy = pickStrategy(animal);
+            EatResult result = strategy.calculateEat(animal, island);
+            eatResults.add(result);
         }
-
         return eatResults;
+    }
+
+    private EatStrategy pickStrategy(Animal animal) {
+        if (shouldEat(animal)) {
+            System.out.println(animal.getId() + " is starving");
+            return animal.getEatStrategy();
+        }
+        return noActionStrategy;
+    }
+
+    private boolean shouldEat(Animal animal) {
+        return animal.isExist()
+                && animal.getEnergy() > 0
+                && !animal.isSleeping()
+                && animal.getSatiety() <= animal.getMinSatiety();
     }
 
     public void applyEat(EatResult result) {
@@ -46,7 +61,7 @@ public class EatingExecutor {
             return;
         }
 
-        Location location = result.getLocation();
+        Location location = result.getBaseActionLocation();
         // set energy after trying to eat
         animal.setEnergy(animal.getEnergy() - animal.getActionCost());
         animal.setSatiety(animal.getSatiety() - animal.getActionCost());
@@ -80,9 +95,6 @@ public class EatingExecutor {
         } else {
             animal.setSatiety(animal.getSatiety() + weight);
         }
-
-        System.out.println(animal + " successfully ate " + food +
-                " energy after eat: " + animal.getEnergy() + "; satiety level: " + animal.getSatiety());
 
     }
 

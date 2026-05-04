@@ -14,7 +14,6 @@ public class SimulationContext {
         this.statistics = statistics;
     }
 
-
     public SimulationStatistics getStatistics() {
         return statistics;
     }

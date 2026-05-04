@@ -25,6 +25,6 @@ public class DeathRecord implements Event {
     @Override
     public String toString() {
         return String.format("%s died at cycle %d: %s",
-                entityType, simulationCycle, reason.getDescription());
+                entity.getId(), simulationCycle, reason.getDescription());
     }
 }

@@ -6,62 +6,45 @@ import org.island.playground.Island;
 import org.island.playground.Location;
 import org.island.playground.SurfaceType;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class LandMoveStrategy implements MovementStrategy {
     //TODO move it to config
     private static final int MAX_RETRIES = 5;
     private static final ActionType actionType = ActionType.MOVE_LAND;
 
-    // TODO not to move in the same location
-    // TODO consider movements for finding prey to eat
     @Override
     public MoveResult calculateMove(Animal animal, Island island) {
-        int currX = animal.getX();
-        int currY = animal.getY();
-        Location fromLocation = island.getLocation(currX, currY);
-
-        int remainingMoveSteps = animal.getMoveSteps();
+        Location currentLocation = getCurrentLocation(animal, island);
         int stepsTaken = 0;
+        List<Location> path = new ArrayList<>();
+        path.add(currentLocation);
 
-        MoveResult result = new MoveResult(
-                actionType,
-                animal,
-                fromLocation,
-                fromLocation,
-                stepsTaken,
-                true);
-
-        result.addPathStep(fromLocation);
-
-        while (remainingMoveSteps > 0) {
-            Location nextLocation = findValidLocation(currX, currY, island);
+        while (stepsTaken < animal.getMoveSteps()) {
+            Location nextLocation = findValidLocation(currentLocation, island);
 
             if (nextLocation == null) break;
 
-            currX = nextLocation.getX();
-            currY = nextLocation.getY();
-            result.addPathStep(nextLocation);
+            currentLocation = nextLocation;
+            path.add(nextLocation);
             stepsTaken++;
-            remainingMoveSteps--;
         }
 
-        Location finalLocation = island.getLocation(currX, currY);
-
-        return new MoveResult(actionType, animal, fromLocation, finalLocation, stepsTaken, true);
+        return new MoveResult(actionType, animal, path.get(0), currentLocation, stepsTaken, path,true);
     }
 
-    private Location findValidLocation(int x, int y, Island island) {
-
+    private Location findValidLocation(Location current, Island island) {
         for (int attempt = 0; attempt < MAX_RETRIES; attempt++){
             Direction dir = Direction.getRandomDirection();
-            int nextX = x + dir.getDx();
-            int nextY = y + dir.getDy();
-
-            Location candidate = island.getLocation(nextX, nextY);
+            Location candidate = island.getLocation(
+                    current.getX() + dir.getDx(),
+                    current.getY() + dir.getDy()
+            );
 
             if (isLocationSuitable(candidate)){
                 return candidate;
             }
-
         }
         return null;
     }

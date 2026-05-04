@@ -5,6 +5,7 @@ import org.island.entity.animals.Animal;
 import org.island.playground.Island;
 import org.island.playground.Location;
 
+// TODO REFACTOR
 public class SleepRestStrategy implements RestStrategy {
     private final ActionType actionType = ActionType.REST_SLEEP;
 
@@ -21,9 +22,9 @@ public class SleepRestStrategy implements RestStrategy {
             animal.setSleepCycles(2);
             // TODO remove sout
             System.out.println(animal.getId() + " falling to sleep");
-            return new RestResult(actionType, animal, currentLocation, true, energyBefore, gainedEnergy);
+            return new RestResult(actionType, animal, currentLocation, energyBefore, gainedEnergy, true);
         }
 
-        return new RestResult(actionType, animal, currentLocation, false, energyBefore, energyBefore);
+        return new RestResult(actionType, animal, currentLocation, energyBefore, energyBefore, false);
     }
 }

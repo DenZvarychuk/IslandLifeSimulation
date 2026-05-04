@@ -2,20 +2,16 @@ package org.island.entity.animals;
 
 import org.island.config.AnimalConfig;
 import org.island.config.DietConfig;
-import org.island.engine.actions.ActionType;
+import org.island.engine.actions.eating.AnimalConfigEatStrategy;
 import org.island.engine.actions.eating.EatResult;
 import org.island.engine.actions.eating.EatStrategy;
-import org.island.engine.actions.eating.AnimalConfigEatStrategy;
 import org.island.engine.actions.movements.LandMoveStrategy;
 import org.island.engine.actions.movements.MoveResult;
 import org.island.engine.actions.movements.MovementStrategy;
-import org.island.engine.actions.resting.IdleRestStrategy;
 import org.island.engine.actions.resting.RestResult;
 import org.island.engine.actions.resting.RestStrategy;
-import org.island.engine.actions.resting.SleepRestStrategy;
 import org.island.entity.Entity;
 import org.island.playground.Island;
-import org.island.playground.Location;
 
 public abstract class Animal extends Entity<AnimalType> {
 
@@ -51,33 +47,16 @@ public abstract class Animal extends Entity<AnimalType> {
         this.eatStrategy = new AnimalConfigEatStrategy();
     }
 
+    // methods move(), eat() and rest() not needed after refactoring
+    // leaved in code for testing purposes
     public MoveResult move(Island island) {
         return movementStrategy.calculateMove(this, island);
     }
-
     public EatResult eat(Island island) {
-        Location location = island.getLocation(this.x, this.y);
-        if (satiety <= minSatiety) {
-            System.out.println(this.getId() + " is starving");
-            return eatStrategy.calculateEat(this, island);
-        }
-        return new EatResult(this, null, location, false);
-    };
-
+        return eatStrategy.calculateEat(this, island);
+    }
     public RestResult rest(Island island) {
-        Location location = island.getLocation(this.x, this.y);
-
-        if (energy < maxSatiety * 0.1){
-            System.out.println(this.getId() + " is exhausted");
-            restStrategy = new SleepRestStrategy();
-            return restStrategy.calculateRest(this, island);
-        } else if (energy < maxSatiety * 0.5) {
-            System.out.println(this.getId() + " is tired");
-            restStrategy = new IdleRestStrategy();
-            return restStrategy.calculateRest(this, island);
-        }
-
-        return new RestResult(ActionType.NONE, this, location, false, energy, energy);
+        return restStrategy.calculateRest(this, island);
     }
 
     public abstract void reproduce();
@@ -94,12 +73,12 @@ public abstract class Animal extends Entity<AnimalType> {
         return moveSteps;
     }
 
-    public void setMovementStrategy(MovementStrategy strategy) {
-        this.movementStrategy = strategy;
-    }
-
     public MovementStrategy getMovementStrategy() {
         return movementStrategy;
+    }
+
+    public EatStrategy getEatStrategy() {
+        return eatStrategy;
     }
 
     public double getEnergy() {
@@ -107,7 +86,7 @@ public abstract class Animal extends Entity<AnimalType> {
     }
 
     public void setEnergy(double energy) {
-        if (energy < 0) {
+        if (energy <= 0) {
             this.energy = 0;
         } else this.energy = energy;
     }
@@ -116,12 +95,18 @@ public abstract class Animal extends Entity<AnimalType> {
         return maxSatiety;
     }
 
+    public double getMinSatiety() {
+        return minSatiety;
+    }
+
     public double getSatiety() {
         return satiety;
     }
 
     public void setSatiety(double satiety) {
-        this.satiety = satiety;
+        if (satiety <= 0) {
+            this.satiety = 0;
+        } else this.satiety = satiety;
     }
 
     public double getActionCost() {
@@ -140,7 +125,8 @@ public abstract class Animal extends Entity<AnimalType> {
         return sleepCycles;
     }
 
-    public void setSleepCycles(int cycles){
+    public void setSleepCycles(int cycles) {
         this.sleepCycles = cycles;
     }
+
 }

@@ -5,7 +5,7 @@ import java.util.List;
 
 public class SimulationStatistics {
     // TODO add more reports
-    private final List<DeathRecord> deathRecords = new ArrayList<>();;
+    private final List<DeathRecord> deathRecords = new ArrayList<>();
 
     public SimulationStatistics(EventBus eventBus) {
         eventBus.subscribe(DeathRecord.class, this::registerDeath);
@@ -40,7 +40,6 @@ public class SimulationStatistics {
         System.out.println("\n--- DEATHS ---");
         System.out.println("Total deaths: " + getTotalDeaths());
         deathRecords.forEach(System.out::println);
-
 
         System.out.println("\n===========================================");
     }

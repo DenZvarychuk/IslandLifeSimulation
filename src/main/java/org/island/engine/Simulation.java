@@ -1,6 +1,7 @@
 package org.island.engine;
 
 import org.island.config.SimulationConfig;
+import org.island.engine.actions.ActionType;
 import org.island.engine.actions.eating.EatResult;
 import org.island.engine.actions.eating.EatingExecutor;
 import org.island.engine.actions.movements.MoveResult;
@@ -26,16 +27,17 @@ public class Simulation {
     public Simulation(SimulationContext simulationContext, SimulationConfig config) {
         this.simulationContext = simulationContext;
         this.simulationCycleCount = config.getSimulationCycleCount();
-        this.movementExecutor = new MovementExecutor(simulationContext);
+        // TODO move Executors to Factory
+        this.movementExecutor = new MovementExecutor(simulationContext, config.getActionConfig());
         this.eatingExecutor = new EatingExecutor(simulationContext);
-        this.restExecutor = new RestExecutor(simulationContext);
+        this.restExecutor = new RestExecutor(simulationContext, config.getActionConfig());
     }
 
     public void start(Island island) throws InterruptedException {
         System.out.println("=== Simulation Starting ===\n");
 
         while (hasSimulationCycles()) {
-            System.out.println("----- Step " + cycle + "-----");
+            System.out.println("\n\n----- Step " + cycle + "-----");
 
             // actions
             // moving
@@ -45,21 +47,33 @@ public class Simulation {
 
             for (MoveResult result : moveResults) {
                 movementExecutor.applyMove(result);
-                System.out.println(result.getAnimal() +
-                        " moved from " + result.getStartLocation().toString() +
-                        " to " + result.getEndLocation() +
-                        " in " + result.getStepsTaken() + " steps");
-            }
 
+                if (result.getActionType() != ActionType.NONE) {
+                    System.out.println(result.getAnimal() +
+                            " moved from " + result.getBaseActionLocation().toString() +
+                            " to " + result.getEndLocation() +
+                            " in " + result.getStepsTaken() + " steps" +
+                            " result: " + result.isSuccessful() +
+                            "\n" + result.getAnimal().getEnergy() + " "
+                            + result.getAnimal().getSatiety());
+
+                }
+            }
 
             // eating
             List<EatResult> eatResults = eatingExecutor.eat(island);
             // apply eat
             for (EatResult result : eatResults) {
                 eatingExecutor.applyEat(result);
-                System.out.println(result.getAnimal() +
-                        " ate " + result.getFood() +
-                        " in " + result.getLocation());
+
+                if (result.getActionType() != ActionType.NONE) {
+                    System.out.println(result.getAnimal() +
+                            " ate " + result.getFood() +
+                            " in " + result.getBaseActionLocation() +
+                            " result " + result.isSuccessful() +
+                            "\n" + result.getAnimal().getEnergy() + " "
+                            + result.getAnimal().getSatiety());
+                }
             }
 
 
@@ -69,11 +83,17 @@ public class Simulation {
             // apply rest
             for (RestResult result : restResults) {
                 restExecutor.applyRest(result);
-                System.out.println(result.getAnimal() +
-                        " is " + result.getActionType() +
-                        " in: " + result.getLocation() +
-                        " energy before: " + result.getEnergyBefore() +
-                        " energy after: " + result.getEnergyAfter());
+
+                if (result.getActionType() != ActionType.NONE) {
+                    System.out.println(result.getAnimal() +
+                            " is " + result.getActionType() +
+                            " in: " + result.getBaseActionLocation() +
+                            " energy before: " + result.getEnergyBefore() +
+                            " energy after: " + result.getEnergyAfter() +
+                            " result " + result.isSuccessful() +
+                            "\n" + result.getAnimal().getEnergy() + " "
+                            + result.getAnimal().getSatiety());
+                }
             }
 
 
@@ -83,8 +103,8 @@ public class Simulation {
 
             // make animal not sleeping
             List<Animal> animals = island.getAllAnimals();
-            for (Animal animal : animals){
-                if (animal.isSleeping()){
+            for (Animal animal : animals) {
+                if (animal.isSleeping()) {
                     animal.setSleepCycles(animal.getSleepCycles() - 1);
                     if (animal.getSleepCycles() == 0) System.out.println(animal.getId() + " waked up");
                 }
@@ -110,7 +130,7 @@ public class Simulation {
         int totalRest = 0;
 
         for (MoveResult result : results) {
-            if (result.isMoveSuccessful()) {
+            if (result.isSuccessful()) {
                 totalMoved++;
                 totalSteps += result.getStepsTaken();
             }
@@ -123,7 +143,7 @@ public class Simulation {
         }
 
         for (RestResult result : restResults) {
-            if (result.isRestSuccessful()) {
+            if (result.isSuccessful()) {
                 totalRest++;
             }
         }

@@ -10,7 +10,7 @@ public abstract class Entity<T extends EntityType> {
     protected T type;
     protected boolean isExist;
 
-    public Entity(T type){
+    public Entity(T type) {
         this.isExist = true;
         this.type = type;
         this.id = type + "-" + UUID.randomUUID().toString();

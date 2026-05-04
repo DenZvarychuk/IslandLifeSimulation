@@ -1,7 +1,8 @@
 package org.island.engine.actions.movements;
 
+import org.island.config.ActionConfig;
 import org.island.engine.SimulationContext;
-import org.island.engine.actions.ActionType;
+import org.island.engine.actions.NoActionStrategy;
 import org.island.entity.animals.Animal;
 import org.island.playground.Island;
 import org.island.playground.Location;
@@ -12,11 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MovementExecutor {
+    private final double movementMinEnergyRatio;
     private SimulationContext simulationContext;
-    private final MovementStrategy noMoveStrategy = new NoMoveStrategy();  // Reuse instance
+    private final NoActionStrategy noActionStrategy = new NoActionStrategy();
 
-
-    public MovementExecutor(SimulationContext simulationContext) {
+    public MovementExecutor(SimulationContext simulationContext, ActionConfig actionConfig) {
+        this.movementMinEnergyRatio = actionConfig.getMovementMinEnergyRatio();
         this.simulationContext = simulationContext;
     }
 
@@ -30,36 +32,37 @@ public class MovementExecutor {
             MovementStrategy strategy = pickStrategy(animal);
             MoveResult result = strategy.calculateMove(animal, island);
             moveResults.add(result);
-
         }
         return moveResults;
     }
 
     private MovementStrategy pickStrategy(Animal animal) {
-        if (shouldAnimalMove(animal)) return animal.getMovementStrategy();
-        return noMoveStrategy;
+        if (shouldMove(animal)) {
+            System.out.println(animal.getId() + " is moving");
+            System.out.println(animal.getEnergy() + " " + animal.getSatiety());
+            return animal.getMovementStrategy();
+        }
+        return noActionStrategy;
     }
 
-    private boolean shouldAnimalMove(Animal animal) {
+    private boolean shouldMove(Animal animal) {
+        double minEnergyToMove = animal.getMaxSatiety() * movementMinEnergyRatio;
         return animal.isExist()
-                && animal.getEnergy() > 0
+                && animal.getEnergy() > minEnergyToMove
                 && !animal.isSleeping()
                 && animal.getMoveSteps() > 0
                 && animal.getMovementStrategy() != null;
     }
 
     public void applyMove(MoveResult result) {
-        if (!result.isMoveSuccessful()) {
-            return;
-        }
 
         Animal animal = result.getAnimal();
 
-        if (!animal.isExist()) {
+        if (!animal.isExist() || !result.isSuccessful()) {
             return;
         }
 
-        Location from = result.getStartLocation();
+        Location from = result.getBaseActionLocation();
         Location to = result.getEndLocation();
 
         from.removeEntity(animal);

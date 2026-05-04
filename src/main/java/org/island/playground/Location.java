@@ -21,7 +21,7 @@ public class Location {
     }
 
     public void addEntity(Entity entity) {
-        if (entity != null)
+        if (entity != null && entity.isExist())
             entities.add(entity);
     }
 

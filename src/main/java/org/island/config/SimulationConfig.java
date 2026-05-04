@@ -3,6 +3,7 @@ package org.island.config;
 public class SimulationConfig {
     private IslandConfig islandConfig;
     private EntitiesConfig entitiesConfig;
+    private ActionConfig actionConfig;
     private int simulationCycleCount;
 
     public EntitiesConfig getEntitiesConfig() {
@@ -29,4 +30,11 @@ public class SimulationConfig {
         this.simulationCycleCount = simulationCycleCount;
     }
 
+    public ActionConfig getActionConfig() {
+        return actionConfig;
+    }
+
+    public void setActionConfig(ActionConfig actionConfig) {
+        this.actionConfig = actionConfig;
+    }
 }

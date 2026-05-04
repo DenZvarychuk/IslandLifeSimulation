@@ -7,6 +7,7 @@ import org.island.playground.Location;
 
 import java.util.Random;
 
+// TODO REFACTOR
 public class IdleRestStrategy implements RestStrategy {
     private final Random random = new Random();
     private final ActionType actionType = ActionType.REST_IDLE;
@@ -22,9 +23,7 @@ public class IdleRestStrategy implements RestStrategy {
         // TODO move it into actionPicker or something
         if (random.nextDouble() < 0.5) {
             double gainedEnergy = energyBefore * 1.2;
-            return new RestResult(actionType, animal, currentLocation, true, energyBefore, gainedEnergy);
-        }
-
-        return new RestResult(actionType, animal, currentLocation, false, energyBefore, energyBefore);
+            return new RestResult(actionType, animal, currentLocation, energyBefore, gainedEnergy, true);
+        } else return new RestResult(actionType, animal, currentLocation, energyBefore, energyBefore, false);
     }
 }
