@@ -79,8 +79,21 @@ entitiesConfig:
         FIELD_SAND: MEDIUM
         FIELD_ROCK: LOW
 
-# TODO move it into AnimalConfig
 actionConfig:
+  # REST
+  baseRestMinEnergyRatio: 0.5   # n% from full energy
   sleepRestMinEnergyRatio: 0.1  # n% from full energy
+  sleepRestCycleCount: 1
   idleRestMinEnergyRatio: 0.5   # n% from full energy
+  idleRestChance: 0.5
+  idleRestEnergyBoost: 1.2
+
+
+  #MOVE
   movementMinEnergyRatio: 0.2   # n% from full energy
+  landMoveFindLocationRetries: 5
+
+  #EAT
+  eatMinEnergyRatio: 0.05        # n% from full energy
+
+  #REPRODUCE

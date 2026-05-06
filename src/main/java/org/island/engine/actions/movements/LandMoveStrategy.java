@@ -1,5 +1,6 @@
 package org.island.engine.actions.movements;
 
+import org.island.config.ActionConfig;
 import org.island.engine.actions.ActionType;
 import org.island.entity.animals.Animal;
 import org.island.playground.Island;
@@ -10,9 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LandMoveStrategy implements MovementStrategy {
-    //TODO move it to config
-    private static final int MAX_RETRIES = 5;
+    private final ActionConfig actionConfig;
     private static final ActionType actionType = ActionType.MOVE_LAND;
+
+    public LandMoveStrategy(ActionConfig actionConfig) {
+        this.actionConfig = actionConfig;
+    }
 
     @Override
     public MoveResult calculateMove(Animal animal, Island island) {
@@ -30,12 +34,12 @@ public class LandMoveStrategy implements MovementStrategy {
             path.add(nextLocation);
             stepsTaken++;
         }
-
+        System.out.println("animal " + animal.getId() + " will be mooving");
         return new MoveResult(actionType, animal, path.get(0), currentLocation, stepsTaken, path,true);
     }
 
     private Location findValidLocation(Location current, Island island) {
-        for (int attempt = 0; attempt < MAX_RETRIES; attempt++){
+        for (int attempt = 0; attempt < actionConfig.getLandMoveFindLocationRetries(); attempt++){
             Direction dir = Direction.getRandomDirection();
             Location candidate = island.getLocation(
                     current.getX() + dir.getDx(),

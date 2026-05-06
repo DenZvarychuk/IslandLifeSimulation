@@ -43,8 +43,6 @@ public abstract class Animal extends Entity<AnimalType> {
         this.satiety = config.getMaxSatiety();
         this.maxOnLocation = config.getMaxOnLocation();
         this.actionCost = config.getMaxSatiety() * 0.1;
-        this.movementStrategy = new LandMoveStrategy();
-        this.eatStrategy = new AnimalConfigEatStrategy();
     }
 
     // methods move(), eat() and rest() not needed after refactoring

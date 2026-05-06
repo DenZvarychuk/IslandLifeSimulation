@@ -1,60 +1,30 @@
 package org.island.engine.actions.movements;
 
-import org.island.config.ActionConfig;
 import org.island.engine.SimulationContext;
-import org.island.engine.actions.NoActionStrategy;
+import org.island.engine.actions.ActionDecision;
+import org.island.engine.actions.ActionExecutor;
 import org.island.entity.animals.Animal;
 import org.island.playground.Island;
 import org.island.playground.Location;
 import org.island.statistics.DeathReason;
 import org.island.statistics.DeathRecord;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class MovementExecutor {
-    private final double movementMinEnergyRatio;
+public class MovementExecutor implements ActionExecutor<MoveResult> {
     private SimulationContext simulationContext;
-    private final NoActionStrategy noActionStrategy = new NoActionStrategy();
 
-    public MovementExecutor(SimulationContext simulationContext, ActionConfig actionConfig) {
-        this.movementMinEnergyRatio = actionConfig.getMovementMinEnergyRatio();
+    public MovementExecutor(SimulationContext simulationContext) {
         this.simulationContext = simulationContext;
     }
 
-    public List<MoveResult> move(Island island) {
+    public MoveResult calculate(ActionDecision decision, Island island) {
 
-        List<Animal> animals = island.getAllAnimals();
-        List<MoveResult> moveResults = new ArrayList<>();
+        Animal animal = decision.getAnimal();
+        MovementStrategy strategy = (MovementStrategy) decision.getStrategy();
 
-        for (Animal animal : animals) {
-            // TODO move it into action executor
-            MovementStrategy strategy = pickStrategy(animal);
-            MoveResult result = strategy.calculateMove(animal, island);
-            moveResults.add(result);
-        }
-        return moveResults;
+        return strategy.calculateMove(animal, island);
     }
 
-    private MovementStrategy pickStrategy(Animal animal) {
-        if (shouldMove(animal)) {
-            System.out.println(animal.getId() + " is moving");
-            System.out.println(animal.getEnergy() + " " + animal.getSatiety());
-            return animal.getMovementStrategy();
-        }
-        return noActionStrategy;
-    }
-
-    private boolean shouldMove(Animal animal) {
-        double minEnergyToMove = animal.getMaxSatiety() * movementMinEnergyRatio;
-        return animal.isExist()
-                && animal.getEnergy() > minEnergyToMove
-                && !animal.isSleeping()
-                && animal.getMoveSteps() > 0
-                && animal.getMovementStrategy() != null;
-    }
-
-    public void applyMove(MoveResult result) {
+    public void apply(MoveResult result) {
 
         Animal animal = result.getAnimal();
 

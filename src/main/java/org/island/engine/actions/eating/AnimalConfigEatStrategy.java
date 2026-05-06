@@ -1,5 +1,6 @@
 package org.island.engine.actions.eating;
 
+import org.island.config.ActionConfig;
 import org.island.config.DietConfig;
 import org.island.engine.actions.ActionType;
 import org.island.entity.Entity;
@@ -13,15 +14,17 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 public class AnimalConfigEatStrategy implements EatStrategy {
+    private final ActionConfig actionConfig;
     private final ActionType actionType = ActionType.EAT;
     private final Random random = new Random();
 
+    public AnimalConfigEatStrategy(ActionConfig actionConfig) {
+        this.actionConfig = actionConfig;
+    }
+
     @Override
     public EatResult calculateEat(Animal animal, Island island) {
-        int currX = animal.getX();
-        int currY = animal.getY();
         Location currentLocation = getCurrentLocation(animal, island);
-
         List<Entity> availableFood = findAvailableFood(animal, currentLocation);
 
         if (availableFood.isEmpty()) {
@@ -57,6 +60,9 @@ public class AnimalConfigEatStrategy implements EatStrategy {
         double possibilityScore = getPossibilityScore(food, animal);
         boolean success = random.nextDouble() <= possibilityScore;
 
+        if (success){
+            System.out.println("animal " + animal.getId() + " will be eating " + food.getId());
+        }
         return new EatResult(actionType, animal, food, location, success);
     }
 

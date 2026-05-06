@@ -1,7 +1,9 @@
 package org.island.engine.actions.eating;
 
 import org.island.engine.SimulationContext;
-import org.island.engine.actions.NoActionStrategy;
+import org.island.engine.actions.ActionDecision;
+import org.island.engine.actions.ActionExecutor;
+import org.island.engine.actions.resting.RestStrategy;
 import org.island.entity.Entity;
 import org.island.entity.animals.Animal;
 import org.island.entity.plants.Plant;
@@ -13,44 +15,23 @@ import org.island.statistics.DeathRecord;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EatingExecutor {
+public class EatingExecutor implements ActionExecutor<EatResult> {
     private SimulationContext simulationContext;
-    private final NoActionStrategy noActionStrategy = new NoActionStrategy();
 
     public EatingExecutor(SimulationContext simulationContext) {
         this.simulationContext = simulationContext;
     }
 
-    public List<EatResult> eat(Island island) {
+    public EatResult calculate(ActionDecision decision, Island island) {
 
-        List<Animal> animals = island.getAllAnimals();
-        List<EatResult> eatResults = new ArrayList<>();
+        Animal animal = decision.getAnimal();
+        EatStrategy strategy = (EatStrategy) decision.getStrategy();
 
-        for (Animal animal : animals) {
-            // TODO move it into action executor
-            EatStrategy strategy = pickStrategy(animal);
-            EatResult result = strategy.calculateEat(animal, island);
-            eatResults.add(result);
-        }
-        return eatResults;
+        return strategy.calculateEat(animal, island);
     }
 
-    private EatStrategy pickStrategy(Animal animal) {
-        if (shouldEat(animal)) {
-            System.out.println(animal.getId() + " is starving");
-            return animal.getEatStrategy();
-        }
-        return noActionStrategy;
-    }
 
-    private boolean shouldEat(Animal animal) {
-        return animal.isExist()
-                && animal.getEnergy() > 0
-                && !animal.isSleeping()
-                && animal.getSatiety() <= animal.getMinSatiety();
-    }
-
-    public void applyEat(EatResult result) {
+    public void apply(EatResult result) {
         if (!result.isSuccessful()) {
             return;
         }
