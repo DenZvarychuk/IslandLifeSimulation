@@ -1,6 +1,6 @@
 package org.island.entity.animals;
 
-import org.island.config.AnimalConfig;
+import org.island.config.entity.AnimalConfig;
 import org.island.playground.Location;
 
 public class Wolf extends Animal{
@@ -11,12 +11,6 @@ public class Wolf extends Animal{
        this.y = location.getY();
        location.addEntity(this);
    }
-
-
-//    @Override
-//    public EatResult eat(Location location) {
-//        return new EatResult(this, null, location, false);
-//    }
 
     @Override
     public void reproduce() {

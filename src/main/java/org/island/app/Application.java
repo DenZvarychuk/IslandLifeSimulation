@@ -30,7 +30,6 @@ public class Application {
 
         simulationContext.getStatistics().printFullReport();
 
-        // TODO behaviour tasks on Tiles
     }
 
     private void loadConfig() {

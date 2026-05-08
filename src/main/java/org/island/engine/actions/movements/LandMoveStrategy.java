@@ -1,6 +1,6 @@
 package org.island.engine.actions.movements;
 
-import org.island.config.ActionConfig;
+import org.island.config.action.MoveConfig;
 import org.island.engine.actions.ActionType;
 import org.island.entity.animals.Animal;
 import org.island.playground.Island;
@@ -10,12 +10,12 @@ import org.island.playground.SurfaceType;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LandMoveStrategy implements MovementStrategy {
-    private final ActionConfig actionConfig;
+public class LandMoveStrategy implements MoveStrategy {
+    private final MoveConfig config;
     private static final ActionType actionType = ActionType.MOVE_LAND;
 
-    public LandMoveStrategy(ActionConfig actionConfig) {
-        this.actionConfig = actionConfig;
+    public LandMoveStrategy(MoveConfig config) {
+        this.config = config;
     }
 
     @Override
@@ -35,18 +35,18 @@ public class LandMoveStrategy implements MovementStrategy {
             stepsTaken++;
         }
         System.out.println("animal " + animal.getId() + " will be mooving");
-        return new MoveResult(actionType, animal, path.get(0), currentLocation, stepsTaken, path,true);
+        return new MoveResult(actionType, animal, path.get(0), currentLocation, stepsTaken, path, true);
     }
 
     private Location findValidLocation(Location current, Island island) {
-        for (int attempt = 0; attempt < actionConfig.getLandMoveFindLocationRetries(); attempt++){
+        for (int attempt = 0; attempt < config.getFindLocationRetries(); attempt++) {
             Direction dir = Direction.getRandomDirection();
             Location candidate = island.getLocation(
                     current.getX() + dir.getDx(),
                     current.getY() + dir.getDy()
             );
 
-            if (isLocationSuitable(candidate)){
+            if (isLocationSuitable(candidate)) {
                 return candidate;
             }
         }

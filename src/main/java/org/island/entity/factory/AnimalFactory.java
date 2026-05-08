@@ -1,6 +1,6 @@
 package org.island.entity.factory;
 
-import org.island.config.AnimalConfig;
+import org.island.config.entity.AnimalConfig;
 import org.island.entity.animals.Animal;
 import org.island.entity.animals.AnimalType;
 import org.island.entity.animals.Rabbit;

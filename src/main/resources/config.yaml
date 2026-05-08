@@ -1,5 +1,6 @@
 # Base simulation config
 simulationCycleCount: 30
+cycleDelay: 1000
 
 # Main Island config with Biomes and Surfaces
 islandConfig:
@@ -15,7 +16,7 @@ islandConfig:
   surfaceConfig:
     rockPercentage: 0.2
 
-# Entity config with Animals and Plant configs
+  # Entity config with Animals and Plant configs
   # Density for Plants and Animals
   #    VERY_HIGH  80-100% of maxOnLocation
   #    HIGH       60-80%
@@ -24,7 +25,7 @@ islandConfig:
   #    VERY_LOW   5-20%
   #    NONE       0%
 
-entitiesConfig:
+entityConfig:
   animalConfig:
     WOLF:
       weight: 50
@@ -34,7 +35,7 @@ entitiesConfig:
       diet:
         edibleAnimals:
           RABBIT: 0.5
-        ediblePlants: {}
+        ediblePlants: { }
 
     RABBIT:
       weight: 2
@@ -42,7 +43,7 @@ entitiesConfig:
       moveSteps: 2
       maxSatiety: 0.45
       diet:
-        edibleAnimals: {}
+        edibleAnimals: { }
         ediblePlants:
           GRASS: 1
           BUSH: 0.8
@@ -81,19 +82,24 @@ entitiesConfig:
 
 actionConfig:
   # REST
-  baseRestMinEnergyRatio: 0.5   # n% from full energy
-  sleepRestMinEnergyRatio: 0.1  # n% from full energy
-  sleepRestCycleCount: 1
-  idleRestMinEnergyRatio: 0.5   # n% from full energy
-  idleRestChance: 0.5
-  idleRestEnergyBoost: 1.2
+  restConfig:
+    baseEnergyRatio: 0.5   # n% from full energy
+    sleep:
+      minEnergyRatio: 0.1  # n% from full energy
+      cycleCount: 1
+    idle:
+      minEnergyRatio: 0.5   # n% from full energy
+      chance: 0.5
+      energyBoost: 1.2
 
 
   #MOVE
-  movementMinEnergyRatio: 0.2   # n% from full energy
-  landMoveFindLocationRetries: 5
+  moveConfig:
+    minEnergyRatio: 0.2   # n% from full energy
+    findLocationRetries: 5
 
   #EAT
-  eatMinEnergyRatio: 0.05        # n% from full energy
+  eatConfig:
+    minEnergyRatio: 0.1        # n% from full energy
 
   #REPRODUCE

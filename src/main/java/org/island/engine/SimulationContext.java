@@ -6,8 +6,7 @@ import org.island.statistics.SimulationStatistics;
 public class SimulationContext {
     private final SimulationStatistics statistics;
     private final EventBus eventbus;
-    // private fianl Randome random;
-    // TODO consider to add any other field valid for simulation
+    // TODO consider to add any other field valid for simulation (Logger, Random, etc)
 
     public SimulationContext(EventBus eventbus, SimulationStatistics statistics) {
         this.eventbus = eventbus;

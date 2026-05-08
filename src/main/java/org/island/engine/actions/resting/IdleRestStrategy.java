@@ -1,6 +1,7 @@
 package org.island.engine.actions.resting;
 
-import org.island.config.ActionConfig;
+import org.island.config.action.ActionConfig;
+import org.island.config.action.RestConfig;
 import org.island.engine.actions.ActionType;
 import org.island.entity.animals.Animal;
 import org.island.playground.Island;
@@ -12,9 +13,9 @@ import java.util.Random;
 public class IdleRestStrategy implements RestStrategy {
     private final Random random = new Random();
     private final ActionType actionType = ActionType.REST_IDLE;
-    private final ActionConfig config;
+    private final RestConfig config;
 
-    public IdleRestStrategy(ActionConfig config) {
+    public IdleRestStrategy(RestConfig config) {
         this.config = config;
     }
 
@@ -26,9 +27,8 @@ public class IdleRestStrategy implements RestStrategy {
 
         double energyBefore = animal.getEnergy();
 
-        // TODO move it into actionPicker or something
-        if (random.nextDouble() < config.getIdleRestChance()) {
-            double gainedEnergy = energyBefore * config.getIdleRestEnergyBoost();
+        if (random.nextDouble() < config.getIdle().getChance()) {
+            double gainedEnergy = energyBefore * config.getIdle().getEnergyBoost();
             System.out.println("animal " + animal.getId() + " will be resting");
             return new RestResult(actionType, animal, currentLocation, energyBefore, gainedEnergy, true);
         } else return new RestResult(actionType, animal, currentLocation, energyBefore, energyBefore, false);

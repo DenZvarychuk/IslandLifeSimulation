@@ -1,8 +1,7 @@
 package org.island.entity.plants;
 
-import org.island.config.PlantConfig;
+import org.island.config.entity.PlantConfig;
 import org.island.entity.Entity;
-import org.island.entity.animals.AnimalType;
 
 public abstract class Plant extends Entity<PlantType> {
 

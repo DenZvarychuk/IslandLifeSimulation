@@ -1,7 +1,7 @@
 package org.island.engine.actions.eating;
 
-import org.island.config.ActionConfig;
-import org.island.config.DietConfig;
+import org.island.config.action.EatConfig;
+import org.island.config.entity.DietConfig;
 import org.island.engine.actions.ActionType;
 import org.island.entity.Entity;
 import org.island.entity.animals.Animal;
@@ -14,12 +14,12 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 public class AnimalConfigEatStrategy implements EatStrategy {
-    private final ActionConfig actionConfig;
+    private final EatConfig config;
     private final ActionType actionType = ActionType.EAT;
     private final Random random = new Random();
 
-    public AnimalConfigEatStrategy(ActionConfig actionConfig) {
-        this.actionConfig = actionConfig;
+    public AnimalConfigEatStrategy(EatConfig config) {
+        this.config = config;
     }
 
     @Override

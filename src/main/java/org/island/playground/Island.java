@@ -1,7 +1,7 @@
 package org.island.playground;
 
-import org.island.config.EntitiesConfig;
-import org.island.config.IslandConfig;
+import org.island.config.entity.EntityConfig;
+import org.island.config.island.IslandConfig;
 import org.island.config.SimulationConfig;
 import org.island.entity.Entity;
 import org.island.entity.animals.Animal;
@@ -24,7 +24,7 @@ public class Island {
     private final Location[][] location;
 
     private IslandConfig islandConfig;
-    private EntitiesConfig entitiesConfig;
+    private EntityConfig entityConfig;
     private AnimalFactory animalFactory;
     private PlantFactory plantFactory;
 
@@ -37,8 +37,8 @@ public class Island {
         this.size = islandConfig.getSize();
         this.seed = islandConfig.getSeed();
         this.noiseCorrelation = islandConfig.getNoiseCorrelation();
-        this.animalFactory = new AnimalFactory(entitiesConfig.getAnimalConfig());
-        this.plantFactory = new PlantFactory(entitiesConfig.getPlantConfig(), seed);
+        this.animalFactory = new AnimalFactory(entityConfig.getAnimalConfig());
+        this.plantFactory = new PlantFactory(entityConfig.getPlantConfig(), seed);
         parseSeed();
         location = new Location[size][size];
         initLocations();
@@ -47,7 +47,7 @@ public class Island {
 
     private void initConfig(SimulationConfig config) {
         this.islandConfig = config.getIslandConfig();
-        this.entitiesConfig = config.getEntitiesConfig();
+        this.entityConfig = config.getEntityConfig();
     }
 
     public void generatePlants() {

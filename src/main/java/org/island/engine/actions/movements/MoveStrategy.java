@@ -4,7 +4,7 @@ import org.island.engine.actions.BaseActionStrategy;
 import org.island.entity.animals.Animal;
 import org.island.playground.Island;
 
-public interface MovementStrategy extends BaseActionStrategy {
+public interface MoveStrategy extends BaseActionStrategy {
 
     MoveResult calculateMove(Animal animal, Island island);
 }

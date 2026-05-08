@@ -3,9 +3,9 @@ package org.island.engine;
 import org.island.config.SimulationConfig;
 import org.island.engine.actions.*;
 import org.island.engine.actions.eating.EatResult;
-import org.island.engine.actions.eating.EatingExecutor;
+import org.island.engine.actions.eating.EatExecutor;
 import org.island.engine.actions.movements.MoveResult;
-import org.island.engine.actions.movements.MovementExecutor;
+import org.island.engine.actions.movements.MoveExecutor;
 import org.island.engine.actions.resting.RestExecutor;
 import org.island.engine.actions.resting.RestResult;
 import org.island.entity.animals.Animal;
@@ -15,17 +15,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Simulation {
-
-    // TODO move it into config
     private static int simulationCycleCount;
     private static int cycle = 0;
+    private static long cycleDelay;
 
     List<ActionDecision> actionDecisions = new ArrayList<>();
     List<ActionResult> actionResults = new ArrayList<>();
 
     private ActionPicker actionPicker;
-    private MovementExecutor movementExecutor;
-    private EatingExecutor eatingExecutor;
+    private MoveExecutor moveExecutor;
+    private EatExecutor eatExecutor;
     private RestExecutor restExecutor;
     private SimulationContext simulationContext;
     private ActionExecutor<? extends ActionResult> actionExecutor;
@@ -33,9 +32,11 @@ public class Simulation {
     public Simulation(SimulationContext simulationContext, SimulationConfig config) {
         this.simulationContext = simulationContext;
         this.simulationCycleCount = config.getSimulationCycleCount();
+        this.cycleDelay = config.getCycleDelay();
+
         // TODO move Executors to Factory
-        this.movementExecutor = new MovementExecutor(simulationContext);
-        this.eatingExecutor = new EatingExecutor(simulationContext);
+        this.moveExecutor = new MoveExecutor(simulationContext);
+        this.eatExecutor = new EatExecutor(simulationContext);
         this.restExecutor = new RestExecutor(simulationContext);
         this.actionPicker = new ActionPicker(simulationContext, config.getActionConfig());
     }
@@ -58,7 +59,7 @@ public class Simulation {
 
             // increment cycle
             cycle++;
-            Thread.sleep(1000);
+            Thread.sleep(cycleDelay);
         }
 
         System.out.println("\n=== Simulation Complete ===");
@@ -96,8 +97,8 @@ public class Simulation {
 
     private ActionResult executeDecision(ActionDecision decision, Island island) {
         return switch (decision.getActionType()) {
-            case EAT  -> eatingExecutor.calculate(decision, island);
-            case MOVE -> movementExecutor.calculate(decision, island);
+            case EAT  -> eatExecutor.calculate(decision, island);
+            case MOVE -> moveExecutor.calculate(decision, island);
             case REST -> restExecutor.calculate(decision, island);
             // TODO process NONE case
             // case NONE -> ActionResult.noAction(decision.getAnimal());
@@ -107,8 +108,8 @@ public class Simulation {
 
     private <T extends ActionResult> void applyResult(ActionResult result) {
         switch (result.getActionType()) {
-            case EAT  -> { if (result instanceof EatResult r) eatingExecutor.apply(r); }
-            case MOVE_LAND  -> { if (result instanceof MoveResult r) movementExecutor.apply(r); }
+            case EAT  -> { if (result instanceof EatResult r) eatExecutor.apply(r); }
+            case MOVE_LAND  -> { if (result instanceof MoveResult r) moveExecutor.apply(r); }
             case REST_IDLE, REST_SLEEP  -> { if (result instanceof RestResult r) restExecutor.apply(r); }
             // TODO process NONE case
             // case NONE -> ActionResult.noAction(decision.getAnimal());

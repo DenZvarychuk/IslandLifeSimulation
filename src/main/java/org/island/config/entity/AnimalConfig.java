@@ -1,8 +1,4 @@
-package org.island.config;
-
-import org.island.entity.animals.AnimalType;
-
-import java.util.List;
+package org.island.config.entity;
 
 public class AnimalConfig {
     private double weight;

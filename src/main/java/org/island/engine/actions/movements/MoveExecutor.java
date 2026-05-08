@@ -9,17 +9,17 @@ import org.island.playground.Location;
 import org.island.statistics.DeathReason;
 import org.island.statistics.DeathRecord;
 
-public class MovementExecutor implements ActionExecutor<MoveResult> {
+public class MoveExecutor implements ActionExecutor<MoveResult> {
     private SimulationContext simulationContext;
 
-    public MovementExecutor(SimulationContext simulationContext) {
+    public MoveExecutor(SimulationContext simulationContext) {
         this.simulationContext = simulationContext;
     }
 
     public MoveResult calculate(ActionDecision decision, Island island) {
 
         Animal animal = decision.getAnimal();
-        MovementStrategy strategy = (MovementStrategy) decision.getStrategy();
+        MoveStrategy strategy = (MoveStrategy) decision.getStrategy();
 
         return strategy.calculateMove(animal, island);
     }

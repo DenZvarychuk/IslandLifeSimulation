@@ -1,6 +1,6 @@
 package org.island.entity.animals;
 
-import org.island.config.AnimalConfig;
+import org.island.config.entity.AnimalConfig;
 import org.island.playground.Location;
 
 public class Rabbit extends Animal{
@@ -11,7 +11,6 @@ public class Rabbit extends Animal{
         this.y = location.getY();
         location.addEntity(this);
     }
-
 
     @Override
     public void reproduce() {

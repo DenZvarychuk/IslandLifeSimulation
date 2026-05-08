@@ -1,12 +1,11 @@
-package org.island.config;
+package org.island.config.entity;
 
-import org.island.entity.animals.Animal;
 import org.island.entity.animals.AnimalType;
 import org.island.entity.plants.PlantType;
 
 import java.util.Map;
 
-public class EntitiesConfig {
+public class EntityConfig {
 
     private Map<PlantType, PlantConfig> plantConfig;
     private Map<AnimalType, AnimalConfig> animalConfig;

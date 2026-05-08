@@ -1,9 +1,8 @@
 package org.island.entity.factory;
 
-import org.island.config.EntityDensity;
-import org.island.config.PlantConfig;
+import org.island.config.entity.EntityDensity;
+import org.island.config.entity.PlantConfig;
 import org.island.entity.plants.*;
-import org.island.playground.Island;
 import org.island.playground.Location;
 
 import java.util.ArrayList;

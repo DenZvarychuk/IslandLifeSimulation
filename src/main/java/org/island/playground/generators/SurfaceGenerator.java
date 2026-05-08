@@ -1,6 +1,6 @@
 package org.island.playground.generators;
 
-import org.island.config.IslandConfig;
+import org.island.config.island.IslandConfig;
 import org.island.playground.BiomeType;
 import org.island.playground.Location;
 import org.island.playground.SurfaceType;

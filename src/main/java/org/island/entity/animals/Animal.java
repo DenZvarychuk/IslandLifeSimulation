@@ -1,13 +1,12 @@
 package org.island.entity.animals;
 
-import org.island.config.AnimalConfig;
-import org.island.config.DietConfig;
-import org.island.engine.actions.eating.AnimalConfigEatStrategy;
+import org.island.config.entity.AnimalConfig;
+import org.island.config.entity.DietConfig;
 import org.island.engine.actions.eating.EatResult;
 import org.island.engine.actions.eating.EatStrategy;
-import org.island.engine.actions.movements.LandMoveStrategy;
 import org.island.engine.actions.movements.MoveResult;
-import org.island.engine.actions.movements.MovementStrategy;
+import org.island.engine.actions.movements.MoveStrategy;
+import org.island.engine.actions.policy.ActionPolicy;
 import org.island.engine.actions.resting.RestResult;
 import org.island.engine.actions.resting.RestStrategy;
 import org.island.entity.Entity;
@@ -26,11 +25,8 @@ public abstract class Animal extends Entity<AnimalType> {
     // TODO reconsider energy
     protected double actionCost;
 
-
     private final DietConfig diet;
-    protected MovementStrategy movementStrategy;
-    protected EatStrategy eatStrategy;
-    protected RestStrategy restStrategy;
+    private ActionPolicy actionPolicy;
 
     public Animal(AnimalConfig config, AnimalType type) {
         super(type);
@@ -45,18 +41,6 @@ public abstract class Animal extends Entity<AnimalType> {
         this.actionCost = config.getMaxSatiety() * 0.1;
     }
 
-    // methods move(), eat() and rest() not needed after refactoring
-    // leaved in code for testing purposes
-    public MoveResult move(Island island) {
-        return movementStrategy.calculateMove(this, island);
-    }
-    public EatResult eat(Island island) {
-        return eatStrategy.calculateEat(this, island);
-    }
-    public RestResult rest(Island island) {
-        return restStrategy.calculateRest(this, island);
-    }
-
     public abstract void reproduce();
 
     public boolean shouldExist() {
@@ -69,14 +53,6 @@ public abstract class Animal extends Entity<AnimalType> {
 
     public int getMoveSteps() {
         return moveSteps;
-    }
-
-    public MovementStrategy getMovementStrategy() {
-        return movementStrategy;
-    }
-
-    public EatStrategy getEatStrategy() {
-        return eatStrategy;
     }
 
     public double getEnergy() {
@@ -127,4 +103,12 @@ public abstract class Animal extends Entity<AnimalType> {
         this.sleepCycles = cycles;
     }
 
+
+    public ActionPolicy getActionPolicy() {
+        return actionPolicy;
+    }
+
+    public void setActionPolicy(ActionPolicy actionPolicy) {
+        this.actionPolicy = actionPolicy;
+    }
 }
