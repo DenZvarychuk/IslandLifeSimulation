@@ -2,14 +2,14 @@ package org.island.engine.actions.movements;
 
 import org.island.engine.SimulationContext;
 import org.island.engine.actions.ActionDecision;
-import org.island.engine.actions.ActionExecutor;
+import org.island.engine.actions.BaseExecutor;
 import org.island.entity.animals.Animal;
 import org.island.playground.Island;
 import org.island.playground.Location;
 import org.island.statistics.DeathReason;
 import org.island.statistics.DeathRecord;
 
-public class MoveExecutor implements ActionExecutor<MoveResult> {
+public class MoveExecutor implements BaseExecutor<MoveResult> {
     private SimulationContext simulationContext;
 
     public MoveExecutor(SimulationContext simulationContext) {

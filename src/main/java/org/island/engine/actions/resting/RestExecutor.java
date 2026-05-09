@@ -2,14 +2,11 @@ package org.island.engine.actions.resting;
 
 import org.island.engine.SimulationContext;
 import org.island.engine.actions.ActionDecision;
-import org.island.engine.actions.ActionExecutor;
+import org.island.engine.actions.BaseExecutor;
 import org.island.entity.animals.Animal;
 import org.island.playground.Island;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class RestExecutor implements ActionExecutor<RestResult> {
+public class RestExecutor implements BaseExecutor<RestResult> {
     private SimulationContext simulationContext;
 
     public RestExecutor(SimulationContext simulationContext) {

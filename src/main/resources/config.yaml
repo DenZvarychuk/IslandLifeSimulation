@@ -1,6 +1,6 @@
 # Base simulation config
 simulationCycleCount: 30
-cycleDelay: 1000
+cycleDelay: 250
 
 # Main Island config with Biomes and Surfaces
 islandConfig:

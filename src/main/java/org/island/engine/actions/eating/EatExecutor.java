@@ -2,7 +2,7 @@ package org.island.engine.actions.eating;
 
 import org.island.engine.SimulationContext;
 import org.island.engine.actions.ActionDecision;
-import org.island.engine.actions.ActionExecutor;
+import org.island.engine.actions.BaseExecutor;
 import org.island.entity.Entity;
 import org.island.entity.animals.Animal;
 import org.island.entity.plants.Plant;
@@ -11,7 +11,7 @@ import org.island.playground.Location;
 import org.island.statistics.DeathReason;
 import org.island.statistics.DeathRecord;
 
-public class EatExecutor implements ActionExecutor<EatResult> {
+public class EatExecutor implements BaseExecutor<EatResult> {
     private SimulationContext simulationContext;
 
     public EatExecutor(SimulationContext simulationContext) {

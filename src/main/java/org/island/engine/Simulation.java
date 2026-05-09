@@ -3,10 +3,7 @@ package org.island.engine;
 import org.island.config.SimulationConfig;
 import org.island.engine.actions.*;
 import org.island.engine.actions.eating.EatResult;
-import org.island.engine.actions.eating.EatExecutor;
 import org.island.engine.actions.movements.MoveResult;
-import org.island.engine.actions.movements.MoveExecutor;
-import org.island.engine.actions.resting.RestExecutor;
 import org.island.engine.actions.resting.RestResult;
 import org.island.entity.animals.Animal;
 import org.island.playground.Island;
@@ -23,21 +20,15 @@ public class Simulation {
     List<ActionResult> actionResults = new ArrayList<>();
 
     private ActionPicker actionPicker;
-    private MoveExecutor moveExecutor;
-    private EatExecutor eatExecutor;
-    private RestExecutor restExecutor;
+    private ActionExecutor actionExecutor;
     private SimulationContext simulationContext;
-    private ActionExecutor<? extends ActionResult> actionExecutor;
 
     public Simulation(SimulationContext simulationContext, SimulationConfig config) {
         this.simulationContext = simulationContext;
         this.simulationCycleCount = config.getSimulationCycleCount();
         this.cycleDelay = config.getCycleDelay();
 
-        // TODO move Executors to Factory
-        this.moveExecutor = new MoveExecutor(simulationContext);
-        this.eatExecutor = new EatExecutor(simulationContext);
-        this.restExecutor = new RestExecutor(simulationContext);
+        this.actionExecutor = new ActionExecutor(simulationContext);
         this.actionPicker = new ActionPicker(simulationContext, config.getActionConfig());
     }
 
@@ -47,15 +38,14 @@ public class Simulation {
         while (hasSimulationCycles()) {
             System.out.println("\n\n----- Step " + cycle + "-----");
 
+            // update animal sleep cycles
+            updateAnimalSleepCycles(island);
             // actions
             decideAndCalculateActions(island);
             applyActions(actionResults);
-            // update animal sleep cycles
-            updateAnimalSleepCycles(island);
             // print stats
             printActionStats(actionResults);
             System.out.println(island.getEntitiesInAllLocByCount());
-
 
             // increment cycle
             cycle++;
@@ -74,14 +64,14 @@ public class Simulation {
         // TODO reconsider, is it ok to clear every Cycle?
         actionResults.clear();
         for (ActionDecision decision : actionDecisions) {
-            actionResults.add(executeDecision(decision, island));
+            actionResults.add(actionExecutor.executeDecision(decision, island));
         }
     }
 
     private void applyActions(List<ActionResult> actionResults) {
         System.out.println("\n----- Action applying phase -----");
         for (ActionResult result : actionResults) {
-            applyResult(result);
+            actionExecutor.applyResult(result);
         }
     }
 
@@ -92,28 +82,6 @@ public class Simulation {
                 animal.setSleepCycles(animal.getSleepCycles() - 1);
                 if (animal.getSleepCycles() < 0) System.out.println(animal.getId() + " waked up");
             }
-        }
-    }
-
-    private ActionResult executeDecision(ActionDecision decision, Island island) {
-        return switch (decision.getActionType()) {
-            case EAT  -> eatExecutor.calculate(decision, island);
-            case MOVE -> moveExecutor.calculate(decision, island);
-            case REST -> restExecutor.calculate(decision, island);
-            // TODO process NONE case
-            // case NONE -> ActionResult.noAction(decision.getAnimal());
-            default -> throw new IllegalStateException("Unexpected value: " + decision.getActionType());
-        };
-    }
-
-    private <T extends ActionResult> void applyResult(ActionResult result) {
-        switch (result.getActionType()) {
-            case EAT  -> { if (result instanceof EatResult r) eatExecutor.apply(r); }
-            case MOVE_LAND  -> { if (result instanceof MoveResult r) moveExecutor.apply(r); }
-            case REST_IDLE, REST_SLEEP  -> { if (result instanceof RestResult r) restExecutor.apply(r); }
-            // TODO process NONE case
-            // case NONE -> ActionResult.noAction(decision.getAnimal());
-            default -> throw new IllegalStateException("Unexpected value: " + result.getActionType());
         }
     }
 

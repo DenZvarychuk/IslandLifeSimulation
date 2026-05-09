@@ -21,7 +21,7 @@ public abstract class Animal extends Entity<AnimalType> {
     protected double minSatiety;
     protected double satiety;
     protected int maxOnLocation;
-    protected int sleepCycles = 0;
+    protected int sleepCycles = -1;
     // TODO reconsider energy
     protected double actionCost;
 
@@ -48,7 +48,7 @@ public abstract class Animal extends Entity<AnimalType> {
     }
 
     public boolean isSleeping() {
-        return sleepCycles > 0;
+        return sleepCycles > -1;
     }
 
     public int getMoveSteps() {
