@@ -23,19 +23,21 @@ public class RestExecutor implements BaseExecutor<RestResult> {
         return strategy.calculateRest(animal, island);
     }
 
-    public void apply(RestResult restResult) {
-        if (!restResult.isSuccessful()) return;
+    public void apply(RestResult result) {
+        if (!result.isSuccessful()) return;
 
-        Animal animal = restResult.getAnimal();
+        Animal animal = result.getAnimal();
 
-        // TODO not dying in sleep????
-        if (!animal.isExist()) return;
+        if (!animal.isExist()) {
+            result.setFailed(true);
+            return;
+        }
 
-        animal.setEnergy(restResult.getEnergyAfter());
+        animal.setEnergy(result.getEnergyAfter());
         animal.setSatiety(animal.getSatiety() - animal.getActionSatietyCost()  / 2);
 
         if (!animal.shouldExist()) {
-            animal.markAsDeadAndRemove(restResult.getBaseActionLocation());
+            animal.markAsDeadAndRemove(result.getBaseActionLocation());
             System.out.println("dead while resting?");
             simulationContext.getStatistics().registerDeath(new DeathRecord(animal, DeathReason.STARVATION));
             return;

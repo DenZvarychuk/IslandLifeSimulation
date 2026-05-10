@@ -2,6 +2,7 @@ package org.island.engine.actions.eating;
 
 import org.island.config.action.EatConfig;
 import org.island.config.entity.DietConfig;
+import org.island.engine.actions.ActionResultStatus;
 import org.island.engine.actions.ActionType;
 import org.island.entity.Entity;
 import org.island.entity.animals.Animal;
@@ -28,7 +29,7 @@ public class AnimalConfigEatStrategy implements EatStrategy {
         List<Entity> availableFood = findAvailableFood(animal, currentLocation);
 
         if (availableFood.isEmpty()) {
-            return new EatResult(actionType, animal, null, currentLocation, false);
+            return new EatResult(actionType, animal, null, currentLocation, false, ActionResultStatus.FAILED_NO_TARGET_FOUND);
         }
 
         return attemptToEat(animal, availableFood, currentLocation);
@@ -63,7 +64,7 @@ public class AnimalConfigEatStrategy implements EatStrategy {
         if (success){
             System.out.println("animal " + animal.getId() + " will be eating " + food.getId());
         }
-        return new EatResult(actionType, animal, food, location, success);
+        return new EatResult(actionType, animal, food, location, success, success ? ActionResultStatus.SUCCESS : ActionResultStatus.FAILED_PROBABILITY_CHECK);
     }
 
     private double getPossibilityScore(Entity food, Animal animal) {

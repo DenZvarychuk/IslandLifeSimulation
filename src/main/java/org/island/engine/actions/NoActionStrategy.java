@@ -12,18 +12,19 @@ import org.island.playground.Location;
 
 public class NoActionStrategy implements MoveStrategy, RestStrategy, EatStrategy {
     private final ActionType NONE = ActionType.NONE;
+    private final ActionResultStatus status = ActionResultStatus.NONE;
     private final boolean notSuccessful = false;
 
     @Override
     public EatResult calculateEat(Animal animal, Island island) {
         Location currentLocation = getCurrentLocation(animal, island);
-        return new EatResult(NONE, animal, null, currentLocation, notSuccessful);
+        return new EatResult(NONE, animal, null, currentLocation, notSuccessful, status);
     }
 
     @Override
     public MoveResult calculateMove(Animal animal, Island island) {
         Location currentLocation = getCurrentLocation(animal, island);
-        return new MoveResult(NONE, animal, currentLocation, currentLocation, 0, null, notSuccessful);
+        return new MoveResult(NONE, animal, currentLocation, currentLocation, 0, null, notSuccessful, status);
     }
 
     @Override

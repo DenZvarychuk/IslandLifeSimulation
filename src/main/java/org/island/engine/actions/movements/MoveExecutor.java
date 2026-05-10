@@ -25,29 +25,31 @@ public class MoveExecutor implements BaseExecutor<MoveResult> {
     }
 
     public void apply(MoveResult result) {
-
         Animal animal = result.getAnimal();
 
         if (!animal.isExist() || !result.isSuccessful()) {
+            result.setFailed(true);
             return;
         }
 
         Location from = result.getBaseActionLocation();
         Location to = result.getEndLocation();
 
-        from.removeEntity(animal);
-
-        animal.setX(to.getX());
-        animal.setY(to.getY());
         animal.setEnergy(animal.getEnergy() - animal.getActionEnergyCost());
         animal.setSatiety(animal.getSatiety() - animal.getActionSatietyCost());
 
         if (!animal.shouldExist()) {
-            animal.markAsDead();
+            animal.markAsDeadAndRemove(from);
             simulationContext.getStatistics().registerDeath(new DeathRecord(animal, DeathReason.STARVATION));
             return;
         }
-        to.addEntity(animal);
+
+        if (!result.isMovedAtSameLocation()) {
+            animal.setX(to.getX());
+            animal.setY(to.getY());
+            from.removeEntity(animal);
+            to.addEntity(animal);
+        }
     }
 
 }

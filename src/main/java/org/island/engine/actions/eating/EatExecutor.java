@@ -33,12 +33,14 @@ public class EatExecutor implements BaseExecutor<EatResult> {
         Location location = result.getBaseActionLocation();
 
         if (!animal.isExist()) {
+            result.setFailed(true);
             return;
         }
 
         if (!result.isSuccessful() || !food.isExist()) {
             animal.setEnergy(animal.getEnergy() - animal.getActionEnergyCost());
             animal.setSatiety(animal.getSatiety() - animal.getActionSatietyCost());
+            result.setFailed(true);
             if (!animal.shouldExist()) {
                 animal.markAsDeadAndRemove(location);
                 simulationContext.getStatistics().registerDeath(new DeathRecord(animal, DeathReason.STARVATION));

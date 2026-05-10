@@ -7,13 +7,16 @@ public abstract class ActionResult {
     protected ActionType actionType;
     protected final Animal animal;
     protected final Location baseActionLocation;
+    protected ActionResultStatus status = ActionResultStatus.NONE;
     protected final boolean isSuccessful;
+    protected boolean isFailed;
 
-    public ActionResult(ActionType actionType, Animal animal, Location baseActionLocation, boolean isSuccessful) {
+    public ActionResult(ActionType actionType, Animal animal, Location baseActionLocation, boolean isSuccessful, ActionResultStatus status) {
         this.actionType = actionType;
         this.animal = animal;
         this.baseActionLocation = baseActionLocation;
         this.isSuccessful = isSuccessful;
+        this.isFailed = isSuccessful ? false : true;
     }
 
     public ActionType getActionType() {
@@ -30,5 +33,21 @@ public abstract class ActionResult {
 
     public boolean isSuccessful() {
         return isSuccessful;
+    }
+
+    public boolean isFailed() {
+        return isFailed;
+    }
+
+    public void setFailed(boolean failed) {
+        this.isFailed = failed;
+    }
+
+    public ActionResultStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ActionResultStatus status) {
+        this.status = status;
     }
 }

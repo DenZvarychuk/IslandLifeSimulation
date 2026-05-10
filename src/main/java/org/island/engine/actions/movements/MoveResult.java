@@ -1,6 +1,7 @@
 package org.island.engine.actions.movements;
 
 import org.island.engine.actions.ActionResult;
+import org.island.engine.actions.ActionResultStatus;
 import org.island.engine.actions.ActionType;
 import org.island.entity.animals.Animal;
 import org.island.playground.Location;
@@ -13,8 +14,15 @@ public class MoveResult extends ActionResult {
     private final List<Location> path;
     private final int stepsTaken;
 
-    public MoveResult(ActionType actionType, Animal animal, Location start, Location end, int stepsTaken, List<Location> path, boolean isSuccessful) {
-        super(actionType, animal, start, isSuccessful);
+    public MoveResult(ActionType actionType,
+                      Animal animal,
+                      Location start,
+                      Location end,
+                      int stepsTaken,
+                      List<Location> path,
+                      boolean isSuccessful,
+                      ActionResultStatus status) {
+        super(actionType, animal, start, isSuccessful, status);
         this.endLocation = end;
         this.stepsTaken = stepsTaken;
         this.path = path != null ? new ArrayList<>(path) : new ArrayList<>();
