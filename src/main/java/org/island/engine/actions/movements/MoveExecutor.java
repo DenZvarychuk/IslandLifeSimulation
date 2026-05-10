@@ -39,8 +39,8 @@ public class MoveExecutor implements BaseExecutor<MoveResult> {
 
         animal.setX(to.getX());
         animal.setY(to.getY());
-        animal.setEnergy(animal.getEnergy() - animal.getActionCost());
-        animal.setSatiety(animal.getSatiety() - animal.getActionCost());
+        animal.setEnergy(animal.getEnergy() - animal.getActionEnergyCost());
+        animal.setSatiety(animal.getSatiety() - animal.getActionSatietyCost());
 
         if (!animal.shouldExist()) {
             animal.markAsDead();

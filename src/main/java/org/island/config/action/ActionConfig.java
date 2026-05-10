@@ -4,7 +4,6 @@ public class ActionConfig {
     private RestConfig restConfig;
     private MoveConfig moveConfig;
     private EatConfig eatConfig;
-
     public RestConfig getRestConfig() {
         return restConfig;
     }

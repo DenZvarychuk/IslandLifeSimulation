@@ -1,5 +1,7 @@
 package org.island.entity;
 
+import org.island.playground.Location;
+
 import java.util.UUID;
 
 public abstract class Entity<T extends EntityType> {
@@ -8,16 +10,31 @@ public abstract class Entity<T extends EntityType> {
     protected int y;
     protected String id;
     protected T type;
+    protected int maxOnLocation;
+    protected double weight;
     protected boolean isExist;
 
-    public Entity(T type) {
+    public Entity(T type){
         this.isExist = true;
         this.type = type;
         this.id = type + "-" + UUID.randomUUID().toString();
     }
 
+    public Entity(T type, double weight, int maxOnLocation) {
+        this.isExist = true;
+        this.type = type;
+        this.id = type + "-" + UUID.randomUUID().toString();
+        this.maxOnLocation = maxOnLocation;
+        this.weight = weight;
+    }
+
     public void markAsDead() {
         this.isExist = false;
+    }
+
+    public void markAsDeadAndRemove(Location location) {
+        this.isExist = false;
+        location.removeEntity(this);
     }
 
     @Override
@@ -33,7 +50,6 @@ public abstract class Entity<T extends EntityType> {
     public String getId() {
         return id;
     }
-
 
     public int getX() {
         return x;
@@ -53,6 +69,10 @@ public abstract class Entity<T extends EntityType> {
 
     public boolean isExist() {
         return isExist;
+    }
+
+    public double getWeight() {
+        return weight;
     }
 
 }

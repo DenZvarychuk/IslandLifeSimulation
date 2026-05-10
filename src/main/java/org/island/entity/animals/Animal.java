@@ -2,43 +2,36 @@ package org.island.entity.animals;
 
 import org.island.config.entity.AnimalConfig;
 import org.island.config.entity.DietConfig;
-import org.island.engine.actions.eating.EatResult;
-import org.island.engine.actions.eating.EatStrategy;
-import org.island.engine.actions.movements.MoveResult;
-import org.island.engine.actions.movements.MoveStrategy;
 import org.island.engine.actions.policy.ActionPolicy;
-import org.island.engine.actions.resting.RestResult;
-import org.island.engine.actions.resting.RestStrategy;
 import org.island.entity.Entity;
-import org.island.playground.Island;
 
 public abstract class Animal extends Entity<AnimalType> {
 
-    protected double weight;
     protected int moveSteps;
+    protected double fullEnergy;
     protected double energy;
     protected double maxSatiety;
     protected double minSatiety;
     protected double satiety;
-    protected int maxOnLocation;
     protected int sleepCycles = -1;
     // TODO reconsider energy
-    protected double actionCost;
+    protected double actionEnergyCost;
+    protected double actionSatietyCost;
 
     private final DietConfig diet;
     private ActionPolicy actionPolicy;
 
     public Animal(AnimalConfig config, AnimalType type) {
-        super(type);
+        super(type, config.getWeight(), config.getMaxOnLocation());
         this.diet = config.getDiet();
-        this.weight = config.getWeight();
         this.moveSteps = config.getMoveSteps();
         this.maxSatiety = config.getMaxSatiety();
-        this.minSatiety = config.getMaxSatiety() / 2;
-        this.energy = config.getMaxSatiety();
-        this.satiety = config.getMaxSatiety();
-        this.maxOnLocation = config.getMaxOnLocation();
-        this.actionCost = config.getMaxSatiety() * 0.1;
+        this.minSatiety = maxSatiety * config.getMinSatietyRatio();
+        this.satiety = maxSatiety;
+        this.fullEnergy = config.getBaseEnergy();
+        this.energy = fullEnergy;
+        this.actionEnergyCost = fullEnergy * config.getActionEnergyCostRatio();
+        this.actionSatietyCost = maxSatiety * config.getActionSatietyCostRatio();
     }
 
     public abstract void reproduce();
@@ -83,16 +76,16 @@ public abstract class Animal extends Entity<AnimalType> {
         } else this.satiety = satiety;
     }
 
-    public double getActionCost() {
-        return actionCost;
+    public double getActionEnergyCost() {
+        return actionEnergyCost;
+    }
+
+    public double getActionSatietyCost() {
+        return actionSatietyCost;
     }
 
     public DietConfig getDiet() {
         return diet;
-    }
-
-    public double getWeight() {
-        return weight;
     }
 
     public int getSleepCycles() {
@@ -103,12 +96,15 @@ public abstract class Animal extends Entity<AnimalType> {
         this.sleepCycles = cycles;
     }
 
-
     public ActionPolicy getActionPolicy() {
         return actionPolicy;
     }
 
     public void setActionPolicy(ActionPolicy actionPolicy) {
         this.actionPolicy = actionPolicy;
+    }
+
+    public double getFullEnergy() {
+        return fullEnergy;
     }
 }

@@ -1,7 +1,9 @@
 package org.island.engine;
 
 import org.island.config.SimulationConfig;
-import org.island.engine.actions.*;
+import org.island.engine.actions.ActionExecutor;
+import org.island.engine.actions.ActionResult;
+import org.island.engine.actions.ActionType;
 import org.island.engine.actions.eating.EatResult;
 import org.island.engine.actions.movements.MoveResult;
 import org.island.engine.actions.resting.RestResult;
@@ -16,10 +18,8 @@ public class Simulation {
     private static int cycle = 0;
     private static long cycleDelay;
 
-    List<ActionDecision> actionDecisions = new ArrayList<>();
     List<ActionResult> actionResults = new ArrayList<>();
 
-    private ActionPicker actionPicker;
     private ActionExecutor actionExecutor;
     private SimulationContext simulationContext;
 
@@ -28,8 +28,7 @@ public class Simulation {
         this.simulationCycleCount = config.getSimulationCycleCount();
         this.cycleDelay = config.getCycleDelay();
 
-        this.actionExecutor = new ActionExecutor(simulationContext);
-        this.actionPicker = new ActionPicker(simulationContext, config.getActionConfig());
+        this.actionExecutor = new ActionExecutor(simulationContext, config.getActionConfig());
     }
 
     public void start(Island island) throws InterruptedException {
@@ -41,8 +40,8 @@ public class Simulation {
             // update animal sleep cycles
             updateAnimalSleepCycles(island);
             // actions
-            decideAndCalculateActions(island);
-            applyActions(actionResults);
+            actionResults = actionExecutor.decideAndCalculate(island);
+            actionExecutor.applyActions(actionResults);
             // print stats
             printActionStats(actionResults);
             System.out.println(island.getEntitiesInAllLocByCount());
@@ -54,25 +53,6 @@ public class Simulation {
 
         System.out.println("\n=== Simulation Complete ===");
 
-    }
-
-    private void decideAndCalculateActions(Island island) {
-        System.out.println("\n----- Deciding actions phase -----");
-        actionDecisions = actionPicker.pickAction(island);
-
-        System.out.println("\n----- Action calculating phase -----");
-        // TODO reconsider, is it ok to clear every Cycle?
-        actionResults.clear();
-        for (ActionDecision decision : actionDecisions) {
-            actionResults.add(actionExecutor.executeDecision(decision, island));
-        }
-    }
-
-    private void applyActions(List<ActionResult> actionResults) {
-        System.out.println("\n----- Action applying phase -----");
-        for (ActionResult result : actionResults) {
-            actionExecutor.applyResult(result);
-        }
     }
 
     private void updateAnimalSleepCycles(Island island) {

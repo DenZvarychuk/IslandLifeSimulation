@@ -37,7 +37,7 @@ public class Island {
         this.size = islandConfig.getSize();
         this.seed = islandConfig.getSeed();
         this.noiseCorrelation = islandConfig.getNoiseCorrelation();
-        this.animalFactory = new AnimalFactory(entityConfig.getAnimalConfig());
+        this.animalFactory = new AnimalFactory(entityConfig.getAnimalConfig(), entityConfig.getDefaults());
         this.plantFactory = new PlantFactory(entityConfig.getPlantConfig(), seed);
         parseSeed();
         location = new Location[size][size];

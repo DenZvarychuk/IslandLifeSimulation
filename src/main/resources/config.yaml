@@ -26,6 +26,12 @@ islandConfig:
   #    NONE       0%
 
 entityConfig:
+  defaults:
+    baseEnergy: 100
+    actionEnergyCostRatio: 0.1
+    actionSatietyCostRatio: 0.1
+    minSatietyRatio: 0.5
+
   animalConfig:
     WOLF:
       weight: 50
@@ -91,7 +97,6 @@ actionConfig:
       minEnergyRatio: 0.5   # n% from full energy
       chance: 0.5
       energyBoost: 1.2
-
 
   #MOVE
   moveConfig:

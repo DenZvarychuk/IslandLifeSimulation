@@ -1,5 +1,6 @@
 package org.island.engine.actions;
 
+import org.island.config.action.ActionConfig;
 import org.island.engine.SimulationContext;
 import org.island.engine.actions.eating.EatExecutor;
 import org.island.engine.actions.eating.EatResult;
@@ -9,19 +10,43 @@ import org.island.engine.actions.resting.RestExecutor;
 import org.island.engine.actions.resting.RestResult;
 import org.island.playground.Island;
 
+import javax.swing.*;
+import java.util.List;
+
 public class ActionExecutor {
     private MoveExecutor moveExecutor;
     private EatExecutor eatExecutor;
     private RestExecutor restExecutor;
 
-    public ActionExecutor(SimulationContext context) {
+    private ActionPicker actionPicker;
+
+    public ActionExecutor(SimulationContext context, ActionConfig actionConfig) {
         // TODO move Executors to Factory
         this.moveExecutor = new MoveExecutor(context);
         this.eatExecutor = new EatExecutor(context);
         this.restExecutor = new RestExecutor(context);
+
+        this.actionPicker = new ActionPicker(context, actionConfig);
     }
 
-    public ActionResult executeDecision(ActionDecision decision, Island island) {
+    public List<ActionResult> decideAndCalculate(Island island) {
+        System.out.println("\n----- Deciding actions phase -----");
+        List<ActionDecision> actionDecisions = actionPicker.pickAction(island);
+
+        System.out.println("\n----- Action calculating phase -----");
+        return actionDecisions.stream()
+                .map(decision -> executeDecision(decision, island))
+                .toList();
+    }
+
+    public void applyActions(List<ActionResult> actionResults) {
+        System.out.println("\n----- Action applying phase -----");
+        for (ActionResult result : actionResults) {
+            applyResult(result);
+        }
+    }
+
+    private ActionResult executeDecision(ActionDecision decision, Island island) {
         return switch (decision.getActionType()) {
             case EAT -> eatExecutor.calculate(decision, island);
             case MOVE -> moveExecutor.calculate(decision, island);
@@ -34,7 +59,7 @@ public class ActionExecutor {
         };
     }
 
-    public <T extends ActionResult> void applyResult(ActionResult result) {
+    private <T extends ActionResult> void applyResult(ActionResult result) {
         switch (result.getActionType()) {
             case EAT  -> { if (result instanceof EatResult r) eatExecutor.apply(r); }
             case MOVE_LAND  -> { if (result instanceof MoveResult r) moveExecutor.apply(r); }

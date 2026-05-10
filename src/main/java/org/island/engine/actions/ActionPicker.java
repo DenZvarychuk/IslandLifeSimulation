@@ -54,7 +54,7 @@ public class ActionPicker {
 
     private boolean shouldEat(Animal animal) {
         return animal.isExist()
-                && animal.getEnergy() > animal.getMaxSatiety() * actionConfig.getEatConfig().getMinEnergyRatio()
+                && animal.getEnergy() > animal.getFullEnergy() * actionConfig.getEatConfig().getMinEnergyRatio()
                 && !animal.isSleeping()
                 && animal.getSatiety() <= animal.getMinSatiety();
     }
@@ -62,13 +62,12 @@ public class ActionPicker {
     private boolean shouldRest(Animal animal) {
         return animal.isExist()
                 && !animal.isSleeping()
-                && animal.getEnergy() < animal.getMaxSatiety() * actionConfig.getRestConfig().getBaseEnergyRatio();
+                && animal.getEnergy() < animal.getFullEnergy() * actionConfig.getRestConfig().getBaseEnergyRatio();
     }
 
     private boolean shouldMove(Animal animal) {
-        double minEnergyToMove = animal.getMaxSatiety() * actionConfig.getMoveConfig().getMinEnergyRatio();
         return animal.isExist()
-                && animal.getEnergy() > minEnergyToMove
+                && animal.getEnergy() > animal.getFullEnergy() * actionConfig.getMoveConfig().getMinEnergyRatio()
                 && !animal.isSleeping()
                 && animal.getMoveSteps() > 0;
     }

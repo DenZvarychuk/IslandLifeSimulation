@@ -15,6 +15,7 @@ public class SimulationStatistics {
 
     // Death statistics
     public void registerDeath(DeathRecord record) {
+        System.out.println("Registered death: " + record);
         deathRecords.add(record);
     }
 

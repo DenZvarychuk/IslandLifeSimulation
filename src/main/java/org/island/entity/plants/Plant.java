@@ -9,10 +9,7 @@ public abstract class Plant extends Entity<PlantType> {
     private int maxOnLocation;
 
     public Plant(PlantConfig config, PlantType type) {
-
-        this.weight = config.getWeight();
-        this.maxOnLocation = config.getMaxOnLocation();
-        super(type);
+        super(type, config.getWeight(), maxOnLocation = config.getMaxOnLocation());
     }
 
     public abstract void grow();
@@ -20,9 +17,5 @@ public abstract class Plant extends Entity<PlantType> {
     public abstract void fade();
 
     public abstract void reproduce();
-
-    public double getWeight() {
-        return weight;
-    }
 
 }

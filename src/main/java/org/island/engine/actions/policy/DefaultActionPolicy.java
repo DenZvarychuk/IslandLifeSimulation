@@ -36,8 +36,8 @@ public class DefaultActionPolicy implements ActionPolicy {
 
     public RestStrategy getRestStrategy(Animal animal) {
         double energy = animal.getEnergy();
-        double energyForSleep = animal.getMaxSatiety() * actionConfig.getRestConfig().getSleep().getMinEnergyRatio();
-        double energyForIdle = animal.getMaxSatiety() * actionConfig.getRestConfig().getIdle().getMinEnergyRatio();
+        double energyForSleep = animal.getFullEnergy() * actionConfig.getRestConfig().getSleep().getMinEnergyRatio();
+        double energyForIdle = animal.getFullEnergy() * actionConfig.getRestConfig().getIdle().getMinEnergyRatio();
 
         if (energy < energyForSleep) {
             System.out.println(animal.getId() + " is exhausted, should sleep");

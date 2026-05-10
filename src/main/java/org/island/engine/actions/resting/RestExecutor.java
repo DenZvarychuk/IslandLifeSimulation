@@ -5,6 +5,8 @@ import org.island.engine.actions.ActionDecision;
 import org.island.engine.actions.BaseExecutor;
 import org.island.entity.animals.Animal;
 import org.island.playground.Island;
+import org.island.statistics.DeathReason;
+import org.island.statistics.DeathRecord;
 
 public class RestExecutor implements BaseExecutor<RestResult> {
     private SimulationContext simulationContext;
@@ -26,10 +28,18 @@ public class RestExecutor implements BaseExecutor<RestResult> {
 
         Animal animal = restResult.getAnimal();
 
+        // TODO not dying in sleep????
         if (!animal.isExist()) return;
 
         animal.setEnergy(restResult.getEnergyAfter());
-        // animal.setSatiety(animal.getSatiety() - animal.getActionCost() / 2);
+        animal.setSatiety(animal.getSatiety() - animal.getActionSatietyCost()  / 2);
+
+        if (!animal.shouldExist()) {
+            animal.markAsDeadAndRemove(restResult.getBaseActionLocation());
+            System.out.println("dead while resting?");
+            simulationContext.getStatistics().registerDeath(new DeathRecord(animal, DeathReason.STARVATION));
+            return;
+        }
 
     }
 

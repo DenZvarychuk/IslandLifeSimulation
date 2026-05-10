@@ -37,17 +37,16 @@ public class EatExecutor implements BaseExecutor<EatResult> {
         }
 
         if (!result.isSuccessful() || !food.isExist()) {
-            animal.setEnergy(animal.getEnergy() - animal.getActionCost());
-            animal.setSatiety(animal.getSatiety() - animal.getActionCost());
+            animal.setEnergy(animal.getEnergy() - animal.getActionEnergyCost());
+            animal.setSatiety(animal.getSatiety() - animal.getActionSatietyCost());
             if (!animal.shouldExist()) {
-                animal.markAsDead();
+                animal.markAsDeadAndRemove(location);
                 simulationContext.getStatistics().registerDeath(new DeathRecord(animal, DeathReason.STARVATION));
             }
             return;
         }
 
-        food.markAsDead();
-        location.removeEntity(food);
+        food.markAsDeadAndRemove(location);
         simulationContext.getStatistics().registerDeath(new DeathRecord(food, DeathReason.EATEN));
         applyNewEnergyAndSatiety(animal, food);
 
@@ -55,9 +54,9 @@ public class EatExecutor implements BaseExecutor<EatResult> {
 
     private void applyNewEnergyAndSatiety(Animal animal, Entity food) {
         double foodWeight = getFoodWeight(food);
-        double newSatiety = Math.min(animal.getMaxSatiety(), animal.getSatiety() - animal.getActionCost() + foodWeight);
+        double newSatiety = Math.min(animal.getMaxSatiety(), animal.getSatiety() - animal.getActionSatietyCost() + foodWeight);
 
-        animal.setEnergy(animal.getEnergy() - animal.getActionCost());
+        animal.setEnergy(animal.getEnergy() - animal.getActionEnergyCost());
         animal.setSatiety(newSatiety);
     }
 
