@@ -29,7 +29,7 @@ public class AnimalConfigEatStrategy implements EatStrategy {
         List<Entity> availableFood = findAvailableFood(animal, currentLocation);
 
         if (availableFood.isEmpty()) {
-            return new EatResult(actionType, animal, null, currentLocation, false, ActionResultStatus.FAILED_NO_TARGET_FOUND);
+            return new EatResult(actionType, animal, null, currentLocation, ActionResultStatus.FAILED_NO_TARGET_FOUND);
         }
 
         return attemptToEat(animal, availableFood, currentLocation);
@@ -61,10 +61,10 @@ public class AnimalConfigEatStrategy implements EatStrategy {
         double possibilityScore = getPossibilityScore(food, animal);
         boolean success = random.nextDouble() <= possibilityScore;
 
-        if (success){
+        if (success) {
             System.out.println("animal " + animal.getId() + " will be eating " + food.getId());
         }
-        return new EatResult(actionType, animal, food, location, success, success ? ActionResultStatus.SUCCESS : ActionResultStatus.FAILED_PROBABILITY_CHECK);
+        return new EatResult(actionType, animal, food, location, success ? ActionResultStatus.SUCCESS : ActionResultStatus.FAILED_PROBABILITY_CHECK);
     }
 
     private double getPossibilityScore(Entity food, Animal animal) {

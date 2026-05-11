@@ -3,6 +3,7 @@ package org.island.engine;
 import org.island.config.SimulationConfig;
 import org.island.engine.actions.ActionExecutor;
 import org.island.engine.actions.ActionResult;
+import org.island.engine.actions.ActionResultStatus;
 import org.island.engine.actions.ActionType;
 import org.island.engine.actions.eating.EatResult;
 import org.island.engine.actions.movements.MoveResult;
@@ -97,14 +98,14 @@ public class Simulation {
                 System.out.println(result.getAnimal() +
                         " moved from " + result.getBaseActionLocation().toString() +
                         " to " + result.getEndLocation() +
-                        " in " + result.getStepsTaken() + " steps" +
-                        " result: " + result.isSuccessful() +
-                        "\n" + result.getAnimal().getEnergy() + " "
-                        + result.getAnimal().getSatiety());
+                        "\n in " + result.getStepsTaken() + " steps" +
+                        "\n status: " + result.getStatus() +
+                        "\n energy: " + result.getAnimal().getEnergy() +
+                        "\n satiety " + result.getAnimal().getSatiety());
 
             }
 
-            if (result.isSuccessful()) {
+            if (result.getStatus() == ActionResultStatus.SUCCESS) {
                 totalMoved++;
                 totalSteps += result.getStepsTaken();
             }
@@ -114,13 +115,13 @@ public class Simulation {
             if (result.getActionType() != ActionType.NONE) {
                 System.out.println(result.getAnimal() +
                         " ate " + result.getFood() +
-                        " in " + result.getBaseActionLocation() +
-                        " result " + result.isSuccessful() +
-                        "\n" + result.getAnimal().getEnergy() + " "
-                        + result.getAnimal().getSatiety());
+                        "\n in " + result.getBaseActionLocation() +
+                        "\n status: " + result.getStatus() +
+                        "\n energy: " + result.getAnimal().getEnergy() +
+                        "\n satiety: " + result.getAnimal().getSatiety());
             }
 
-            if (result.isSuccessful()) {
+            if (result.getStatus() == ActionResultStatus.SUCCESS) {
                 totalEaten++;
             }
         }
@@ -130,14 +131,14 @@ public class Simulation {
                 System.out.println(result.getAnimal() +
                         " is " + result.getActionType() +
                         " in: " + result.getBaseActionLocation() +
-                        " energy before: " + result.getEnergyBefore() +
-                        " energy after: " + result.getEnergyAfter() +
-                        " result " + result.isSuccessful() +
-                        "\n" + result.getAnimal().getEnergy() + " "
-                        + result.getAnimal().getSatiety());
+                        "\n energy before: " + result.getEnergyBefore() +
+                        "\n energy after: " + result.getEnergyAfter() +
+                        "\n status: " + result.getStatus() +
+                        "\n energy: " + result.getAnimal().getEnergy() +
+                        "\n satiety:  " + result.getAnimal().getSatiety());
             }
 
-            if (result.isSuccessful()) {
+            if (result.getStatus() == ActionResultStatus.SUCCESS) {
                 totalRest++;
             }
         }

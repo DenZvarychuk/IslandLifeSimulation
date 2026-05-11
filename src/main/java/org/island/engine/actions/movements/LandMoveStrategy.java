@@ -1,6 +1,7 @@
 package org.island.engine.actions.movements;
 
 import org.island.config.action.MoveConfig;
+import org.island.engine.actions.ActionResultStatus;
 import org.island.engine.actions.ActionType;
 import org.island.entity.animals.Animal;
 import org.island.playground.Island;
@@ -35,7 +36,10 @@ public class LandMoveStrategy implements MoveStrategy {
             stepsTaken++;
         }
         System.out.println("animal " + animal.getId() + " will be mooving");
-        return new MoveResult(actionType, animal, path.get(0), currentLocation, stepsTaken, path, true);
+        if (path.size() >= 1)
+            return new MoveResult(actionType, animal, path.get(0), currentLocation, stepsTaken, path, ActionResultStatus.SUCCESS);
+        else
+            return new MoveResult(actionType, animal, path.get(0), currentLocation, stepsTaken, path, ActionResultStatus.FAILED_NO_TARGET_FOUND);
     }
 
     private Location findValidLocation(Location current, Island island) {

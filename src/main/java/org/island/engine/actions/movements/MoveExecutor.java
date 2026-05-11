@@ -2,6 +2,7 @@ package org.island.engine.actions.movements;
 
 import org.island.engine.SimulationContext;
 import org.island.engine.actions.ActionDecision;
+import org.island.engine.actions.ActionResultStatus;
 import org.island.engine.actions.BaseExecutor;
 import org.island.entity.animals.Animal;
 import org.island.playground.Island;
@@ -27,11 +28,6 @@ public class MoveExecutor implements BaseExecutor<MoveResult> {
     public void apply(MoveResult result) {
         Animal animal = result.getAnimal();
 
-        if (!animal.isExist() || !result.isSuccessful()) {
-            result.setFailed(true);
-            return;
-        }
-
         Location from = result.getBaseActionLocation();
         Location to = result.getEndLocation();
 
@@ -40,6 +36,7 @@ public class MoveExecutor implements BaseExecutor<MoveResult> {
 
         if (!animal.shouldExist()) {
             animal.markAsDeadAndRemove(from);
+            result.setStatus(ActionResultStatus.FAILED_DIED_IN_PROCESS);
             simulationContext.getStatistics().registerDeath(new DeathRecord(animal, DeathReason.STARVATION));
             return;
         }

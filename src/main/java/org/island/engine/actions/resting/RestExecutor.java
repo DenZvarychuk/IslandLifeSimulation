@@ -2,6 +2,7 @@ package org.island.engine.actions.resting;
 
 import org.island.engine.SimulationContext;
 import org.island.engine.actions.ActionDecision;
+import org.island.engine.actions.ActionResultStatus;
 import org.island.engine.actions.BaseExecutor;
 import org.island.entity.animals.Animal;
 import org.island.playground.Island;
@@ -24,14 +25,9 @@ public class RestExecutor implements BaseExecutor<RestResult> {
     }
 
     public void apply(RestResult result) {
-        if (!result.isSuccessful()) return;
+        if (result.getStatus() != ActionResultStatus.SUCCESS) return;
 
         Animal animal = result.getAnimal();
-
-        if (!animal.isExist()) {
-            result.setFailed(true);
-            return;
-        }
 
         animal.setEnergy(result.getEnergyAfter());
         animal.setSatiety(animal.getSatiety() - animal.getActionSatietyCost()  / 2);

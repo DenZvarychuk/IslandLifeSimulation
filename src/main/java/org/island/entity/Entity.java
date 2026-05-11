@@ -28,6 +28,12 @@ public abstract class Entity<T extends EntityType> {
         this.weight = weight;
     }
 
+    public boolean isAtSameLocation(Entity entity){
+        return this.getX() == entity.getX()
+                && this.getY() == entity.getY();
+    }
+
+    @Deprecated(since = "markAsDeadAndRemove was added")
     public void markAsDead() {
         this.isExist = false;
     }

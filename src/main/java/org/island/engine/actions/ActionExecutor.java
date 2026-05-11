@@ -17,7 +17,6 @@ public class ActionExecutor {
     private MoveExecutor moveExecutor;
     private EatExecutor eatExecutor;
     private RestExecutor restExecutor;
-
     private ActionPicker actionPicker;
 
     public ActionExecutor(SimulationContext context, ActionConfig actionConfig) {
@@ -60,6 +59,26 @@ public class ActionExecutor {
     }
 
     private <T extends ActionResult> void applyResult(ActionResult result) {
+
+        System.out.println(result.getAnimal() +
+                " action: " + result.getActionType() +
+                "\n status: " + result.getStatus());
+
+        if (!result.getAnimal().isExist()) {
+            result.setStatus(ActionResultStatus.FAILED_DIED);
+            System.out.println(result.getAnimal() +
+                    " action: " + result.getActionType() +
+                    "\n status: " + result.getStatus());
+            return;
+        }
+
+        if (result.getStatus() != ActionResultStatus.SUCCESS) {
+            System.out.println(result.getAnimal() +
+                    " action: " + result.getActionType() +
+                    "\n failed because of status :" + result.getStatus());
+            return;
+        }
+
         switch (result.getActionType()) {
             case EAT  -> { if (result instanceof EatResult r) eatExecutor.apply(r); }
             case MOVE_LAND  -> { if (result instanceof MoveResult r) moveExecutor.apply(r); }

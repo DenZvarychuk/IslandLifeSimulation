@@ -20,9 +20,8 @@ public class MoveResult extends ActionResult {
                       Location end,
                       int stepsTaken,
                       List<Location> path,
-                      boolean isSuccessful,
                       ActionResultStatus status) {
-        super(actionType, animal, start, isSuccessful, status);
+        super(actionType, animal, start, status);
         this.endLocation = end;
         this.stepsTaken = stepsTaken;
         this.path = path != null ? new ArrayList<>(path) : new ArrayList<>();

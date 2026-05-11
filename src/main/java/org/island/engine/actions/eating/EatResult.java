@@ -11,8 +11,8 @@ import org.island.playground.Location;
 public class EatResult extends ActionResult {
     private final Entity food;
 
-    public EatResult(ActionType actionType, Animal animal, Entity food, Location location, boolean isSuccessful, ActionResultStatus status) {
-        super(actionType, animal, location, isSuccessful, status);
+    public EatResult(ActionType actionType, Animal animal, Entity food, Location location, ActionResultStatus status) {
+        super(actionType, animal, location, status);
         this.food = food;
     }
 

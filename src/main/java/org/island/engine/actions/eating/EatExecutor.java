@@ -2,6 +2,7 @@ package org.island.engine.actions.eating;
 
 import org.island.engine.SimulationContext;
 import org.island.engine.actions.ActionDecision;
+import org.island.engine.actions.ActionResultStatus;
 import org.island.engine.actions.BaseExecutor;
 import org.island.entity.Entity;
 import org.island.entity.animals.Animal;
@@ -32,17 +33,22 @@ public class EatExecutor implements BaseExecutor<EatResult> {
         Entity food = result.getFood();
         Location location = result.getBaseActionLocation();
 
-        if (!animal.isExist()) {
-            result.setFailed(true);
+        if (food == null) {
+            result.setStatus(ActionResultStatus.FAILED_NO_TARGET_FOUND);
             return;
         }
 
-        if (!result.isSuccessful() || !food.isExist()) {
+        if (!food.isAtSameLocation(animal)) {
+            result.setStatus(ActionResultStatus.FAILED_TARGET_GONE);
+            return;
+        }
+
+        if (result.getStatus() == ActionResultStatus.FAILED_PROBABILITY_CHECK) {
             animal.setEnergy(animal.getEnergy() - animal.getActionEnergyCost());
             animal.setSatiety(animal.getSatiety() - animal.getActionSatietyCost());
-            result.setFailed(true);
             if (!animal.shouldExist()) {
                 animal.markAsDeadAndRemove(location);
+                result.setStatus(ActionResultStatus.FAILED_DIED_IN_PROCESS);
                 simulationContext.getStatistics().registerDeath(new DeathRecord(animal, DeathReason.STARVATION));
             }
             return;
@@ -63,8 +69,8 @@ public class EatExecutor implements BaseExecutor<EatResult> {
     }
 
     private double getFoodWeight(Entity food) {
-        if (food instanceof Animal) return ((Animal) food).getWeight();
-        if (food instanceof Plant) return ((Plant) food).getWeight();
+        if (food instanceof Animal) return food.getWeight();
+        if (food instanceof Plant) return food.getWeight();
         return 0;
     }
 

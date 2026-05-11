@@ -1,6 +1,7 @@
 package org.island.engine.actions.resting;
 
 import org.island.config.action.RestConfig;
+import org.island.engine.actions.ActionResultStatus;
 import org.island.engine.actions.ActionType;
 import org.island.entity.animals.Animal;
 import org.island.playground.Island;
@@ -24,6 +25,6 @@ public class SleepRestStrategy implements RestStrategy {
         animal.setSleepCycles(config.getSleep().getCycleCount());
         // TODO remove sout
         System.out.println(animal.getId() + "will falling to sleep");
-        return new RestResult(actionType, animal, currentLocation, energyBefore, gainedEnergy, true);
+        return new RestResult(actionType, animal, currentLocation, energyBefore, gainedEnergy, ActionResultStatus.SUCCESS);
     }
 }
