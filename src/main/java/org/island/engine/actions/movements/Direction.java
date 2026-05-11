@@ -1,4 +1,4 @@
-package org.island.engine.movements;
+package org.island.engine.actions.movements;
 
 import java.util.Random;
 
@@ -15,6 +15,7 @@ public enum Direction {
     // SOUTHEAST(1, 1),
     // SOUTHWEST(-1, 1);
 
+    private final static Random random = new Random();
     private final int dx;
     private final int dy;
 
@@ -32,6 +33,6 @@ public enum Direction {
     }
 
     public static Direction getRandomDirection(){
-        return values()[new Random().nextInt(values().length)];
+        return values()[random.nextInt(values().length)];
     }
 }

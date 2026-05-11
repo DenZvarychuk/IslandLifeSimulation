@@ -4,6 +4,7 @@ import org.island.entity.Entity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Location {
     private final int x;
@@ -21,7 +22,7 @@ public class Location {
     }
 
     public void addEntity(Entity entity) {
-        if (entity != null)
+        if (entity != null && entity.isExist())
             entities.add(entity);
     }
 
@@ -56,5 +57,22 @@ public class Location {
 
     public void setSurface(SurfaceType surface) {
         this.surface = surface;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Location: (%d, %d)", x, y);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Location location = (Location) o;
+        return x == location.x && y == location.y;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y);
     }
 }

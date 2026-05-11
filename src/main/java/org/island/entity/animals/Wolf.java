@@ -1,8 +1,6 @@
 package org.island.entity.animals;
 
-import org.island.config.AnimalConfig;
-import org.island.engine.movements.MoveResult;
-import org.island.playground.Island;
+import org.island.config.entity.AnimalConfig;
 import org.island.playground.Location;
 
 public class Wolf extends Animal{
@@ -15,17 +13,7 @@ public class Wolf extends Animal{
    }
 
     @Override
-    public void eat() {
-
-    }
-
-    @Override
     public void reproduce() {
-
-    }
-
-    @Override
-    public void update() {
 
     }
 }

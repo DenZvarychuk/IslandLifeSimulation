@@ -1,4 +1,4 @@
-package org.island.config;
+package org.island.config.entity;
 
 public enum EntityDensity {
     VERY_HIGH(0.8, 1.0),   // 80-100% of maxOnLocation

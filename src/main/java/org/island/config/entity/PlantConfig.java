@@ -1,4 +1,4 @@
-package org.island.config;
+package org.island.config.entity;
 
 import org.island.playground.BiomeType;
 import org.island.playground.SurfaceType;

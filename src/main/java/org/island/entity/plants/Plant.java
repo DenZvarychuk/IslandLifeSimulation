@@ -1,8 +1,7 @@
 package org.island.entity.plants;
 
-import org.island.config.PlantConfig;
+import org.island.config.entity.PlantConfig;
 import org.island.entity.Entity;
-import org.island.entity.animals.AnimalType;
 
 public abstract class Plant extends Entity<PlantType> {
 
@@ -10,10 +9,7 @@ public abstract class Plant extends Entity<PlantType> {
     private int maxOnLocation;
 
     public Plant(PlantConfig config, PlantType type) {
-
-        this.weight = config.getWeight();
-        this.maxOnLocation = config.getMaxOnLocation();
-        super(type);
+        super(type, config.getWeight(), maxOnLocation = config.getMaxOnLocation());
     }
 
     public abstract void grow();

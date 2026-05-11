@@ -5,20 +5,24 @@ import java.util.List;
 
 public class SimulationStatistics {
     // TODO add more reports
-    private List<DeathRecord> deathRecords;
+    private final List<DeathRecord> deathRecords = new ArrayList<>();
 
-    public SimulationStatistics() {
-        deathRecords = new ArrayList<>();
+    public SimulationStatistics(EventBus eventBus) {
+        eventBus.subscribe(DeathRecord.class, this::registerDeath);
+        // Add any other metrics
     }
+
 
     // Death statistics
     public void registerDeath(DeathRecord record) {
+        System.out.println("Registered death: " + record);
         deathRecords.add(record);
     }
 
     public List<DeathRecord> getDeathRecords() {
         return deathRecords;
     }
+
     public List<DeathRecord> getDeathsByReason(DeathReason reason) {
         return deathRecords.stream()
                 .filter(record -> record.getReason() == reason)
@@ -30,7 +34,6 @@ public class SimulationStatistics {
     }
 
 
-
     // total report
     public void printFullReport() {
         System.out.println("========== SIMULATION STATISTICS ==========");
@@ -38,7 +41,6 @@ public class SimulationStatistics {
         System.out.println("\n--- DEATHS ---");
         System.out.println("Total deaths: " + getTotalDeaths());
         deathRecords.forEach(System.out::println);
-
 
         System.out.println("\n===========================================");
     }
