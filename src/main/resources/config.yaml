@@ -1,6 +1,7 @@
 # Base simulation config
 simulationCycleCount: 30
 cycleDelay: 250
+threadPoolSize: 10
 
 # Main Island config with Biomes and Surfaces
 islandConfig:
