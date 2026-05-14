@@ -10,6 +10,7 @@ public class SimulationConfig {
     private ActionConfig actionConfig;
     private int simulationCycleCount;
     private long cycleDelay;
+    private int threadPoolSize;
 
     public EntityConfig getEntityConfig() {
         return entityConfig;
@@ -49,5 +50,13 @@ public class SimulationConfig {
 
     public void setCycleDelay(long cycleDelay) {
         this.cycleDelay = cycleDelay;
+    }
+
+    public int getThreadPoolSize() {
+        return threadPoolSize;
+    }
+
+    public void setThreadPoolSize(int threadPoolSize) {
+        this.threadPoolSize = threadPoolSize;
     }
 }

@@ -11,31 +11,64 @@ import org.island.engine.actions.resting.RestResult;
 import org.island.playground.Island;
 
 import javax.swing.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 
 public class ActionExecutor {
     private MoveExecutor moveExecutor;
     private EatExecutor eatExecutor;
     private RestExecutor restExecutor;
     private ActionPicker actionPicker;
+    private final ExecutorService executorService;
 
     public ActionExecutor(SimulationContext context, ActionConfig actionConfig) {
         // TODO move Executors to Factory
         this.moveExecutor = new MoveExecutor(context);
         this.eatExecutor = new EatExecutor(context);
         this.restExecutor = new RestExecutor(context);
-
         this.actionPicker = new ActionPicker(context, actionConfig);
+        this.executorService = context.getExecutorService();
     }
 
     public List<ActionResult> decideAndCalculate(Island island) {
         System.out.println("\n----- Deciding actions phase -----");
+        long startTime = System.nanoTime();
         List<ActionDecision> actionDecisions = actionPicker.pickAction(island);
 
         System.out.println("\n----- Action calculating phase -----");
-        return actionDecisions.stream()
-                .map(decision -> executeDecision(decision, island))
-                .toList();
+        List<Future<ActionResult>> futures = new ArrayList<>(actionDecisions.size());
+
+        for (ActionDecision decision : actionDecisions) {
+            futures.add(executorService.submit(() -> executeDecision(decision, island)));
+        }
+
+        List<ActionResult> results = new ArrayList<>(actionDecisions.size());
+
+        for (int i = 0; i < futures.size(); i++) {
+            ActionDecision decision = actionDecisions.get(i);
+            try {
+                results.add(futures.get(i).get());
+            } catch (ExecutionException e) {
+                System.err.println("Action execution failed for decision: " +
+                        decision.getAnimal().getId() +
+                        ": " + e.getMessage());
+                results.add(new NoActionStrategy().calculateRest(decision.getAnimal(), island));
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                System.err.println("Action execution interrupted for decision: " +
+                        decision.getAnimal().getId() +
+                        ": " + e.getMessage());
+                results.add(new NoActionStrategy().calculateRest(decision.getAnimal(), island));
+            }
+        }
+
+        long difMs = (System.nanoTime() - startTime) / 1_000_000;
+        System.out.println("Action picking, deciding and calculating took: " + difMs + "ms for " + island.getAllAnimals().size() + " animals");
+
+        return results;
     }
 
     public void applyActions(List<ActionResult> actionResults) {
@@ -60,10 +93,6 @@ public class ActionExecutor {
 
     private <T extends ActionResult> void applyResult(ActionResult result) {
 
-        System.out.println(result.getAnimal() +
-                " action: " + result.getActionType() +
-                "\n status: " + result.getStatus());
-
         if (!result.getAnimal().isExist()) {
             result.setStatus(ActionResultStatus.FAILED_DIED);
             System.out.println(result.getAnimal() +
@@ -78,6 +107,10 @@ public class ActionExecutor {
                     "\n failed because of status :" + result.getStatus());
             return;
         }
+
+        System.out.println(result.getAnimal() +
+                " action: " + result.getActionType() +
+                "\n status: " + result.getStatus());
 
         switch (result.getActionType()) {
             case EAT  -> { if (result instanceof EatResult r) eatExecutor.apply(r); }
