@@ -60,10 +60,6 @@ public class ActionExecutor {
 
     private <T extends ActionResult> void applyResult(ActionResult result) {
 
-        System.out.println(result.getAnimal() +
-                " action: " + result.getActionType() +
-                "\n status: " + result.getStatus());
-
         if (!result.getAnimal().isExist()) {
             result.setStatus(ActionResultStatus.FAILED_DIED);
             System.out.println(result.getAnimal() +
@@ -78,6 +74,10 @@ public class ActionExecutor {
                     "\n failed because of status :" + result.getStatus());
             return;
         }
+
+        System.out.println(result.getAnimal() +
+                " action: " + result.getActionType() +
+                "\n status: " + result.getStatus());
 
         switch (result.getActionType()) {
             case EAT  -> { if (result instanceof EatResult r) eatExecutor.apply(r); }

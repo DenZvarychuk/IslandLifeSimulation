@@ -69,8 +69,8 @@ public class EatExecutor implements BaseExecutor<EatResult> {
     }
 
     private double getFoodWeight(Entity food) {
-        if (food instanceof Animal) return food.getWeight();
-        if (food instanceof Plant) return food.getWeight();
+        if (food instanceof Animal animal) return animal.getWeight();
+        if (food instanceof Plant plant) return plant.getWeight();
         return 0;
     }
 

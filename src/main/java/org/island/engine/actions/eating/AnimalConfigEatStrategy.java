@@ -12,7 +12,6 @@ import org.island.playground.Location;
 
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 public class AnimalConfigEatStrategy implements EatStrategy {
     private final EatConfig config;
@@ -40,23 +39,20 @@ public class AnimalConfigEatStrategy implements EatStrategy {
 
         return location.getEntities().stream()
                 .filter(entity -> canEat(entity, diet))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private boolean canEat(Entity entity, DietConfig diet) {
-        if (entity instanceof Plant) {
-            Plant plant = (Plant) entity;
+        if (entity instanceof Plant plant) {
             return diet.getEdiblePlants().containsKey(plant.getEntityType());
-        } else if (entity instanceof Animal) {
-            Animal animal = (Animal) entity;
+        } else if (entity instanceof Animal animal) {
             return diet.getEdibleAnimals().containsKey(animal.getEntityType());
         }
         return false;
     }
 
     private EatResult attemptToEat(Animal animal, List<Entity> availableFood, Location location) {
-        // TODO make the chose based on satiety and energy to pick the most suitable prey by weight and possibilityScore
-        Entity food = availableFood.get(0);
+        Entity<?> food = selectFood(availableFood, animal);
 
         double possibilityScore = getPossibilityScore(food, animal);
         boolean success = random.nextDouble() <= possibilityScore;
@@ -67,16 +63,33 @@ public class AnimalConfigEatStrategy implements EatStrategy {
         return new EatResult(actionType, animal, food, location, success ? ActionResultStatus.SUCCESS : ActionResultStatus.FAILED_PROBABILITY_CHECK);
     }
 
+    private Entity<?> selectFood(List<Entity> availableFood, Animal animal) {
+        List<Entity> sortedFood = availableFood.stream()
+                .sorted((e1, e2) -> Double.compare(
+                        getPossibilityScore(e2, animal) * getFoodWeight(e2),
+                        getPossibilityScore(e1, animal) * getFoodWeight(e1)
+                ))
+                .toList();
+
+        if (animal.getSatiety() > animal.getSatiety() * config.getRandomFoodSelectionSatietyMultiplier())
+            return sortedFood.get(random.nextInt(sortedFood.size()));
+        return sortedFood.getFirst();
+    }
+
     private double getPossibilityScore(Entity food, Animal animal) {
         DietConfig diet = animal.getDiet();
 
-        if (food instanceof Plant) {
-            return diet.getEdiblePlants().getOrDefault(food.getEntityType(), 0.0);
-        } else if (food instanceof Animal) {
-            return diet.getEdibleAnimals().getOrDefault(food.getEntityType(), 0.0);
+        if (food instanceof Plant prey) {
+            return diet.getEdiblePlants().getOrDefault(prey.getEntityType(), 0.0);
+        } else if (food instanceof Animal prey) {
+            return diet.getEdibleAnimals().getOrDefault(prey.getEntityType(), 0.0);
         }
         return 0.0;
-
     }
 
+    private double getFoodWeight(Entity food) {
+        if (food instanceof Animal animal) return animal.getWeight();
+        if (food instanceof Plant plant) return plant.getWeight();
+        return 0;
+    }
 }

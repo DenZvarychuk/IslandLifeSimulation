@@ -18,12 +18,12 @@ islandConfig:
 
   # Entity config with Animals and Plant configs
   # Density for Plants and Animals
-  #    VERY_HIGH  80-100% of maxOnLocation
-  #    HIGH       60-80%
-  #    MEDIUM     40-60%
-  #    LOW        20-40%
-  #    VERY_LOW   5-20%
-  #    NONE       0%
+  #    VERY_HIGH -80-100% of maxOnLocation
+  #    HIGH - - - 60-80%
+  #    MEDIUM - - 40-60%
+  #    LOW - - - -20-40%
+  #    VERY_LOW - 5-20%
+  #    NONE - - - 0%
 
 entityConfig:
   defaults:
@@ -106,5 +106,6 @@ actionConfig:
   #EAT
   eatConfig:
     minEnergyRatio: 0.1        # n% from full energy
+    randomFoodSelectionSatietyMultiplier: 0.5   # n% from MinSatiety
 
   #REPRODUCE
