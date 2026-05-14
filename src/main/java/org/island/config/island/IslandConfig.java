@@ -1,4 +1,4 @@
-package org.island.config;
+package org.island.config.island;
 
 public class IslandConfig {
     private int size;
