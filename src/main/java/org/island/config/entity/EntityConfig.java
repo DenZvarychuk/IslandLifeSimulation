@@ -34,4 +34,3 @@ public class EntityConfig {
         this.defaults = defaults;
     }
 }
-

@@ -55,3 +55,4 @@ public class DefaultActionPolicy implements ActionPolicy {
         return landMoveStrategy;
     }
 }
+
