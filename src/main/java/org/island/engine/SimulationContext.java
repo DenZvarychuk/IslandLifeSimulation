@@ -27,6 +27,7 @@ public class SimulationContext {
     public EventBus getEventbus() {
         return eventbus;
     }
+}
 
     public ExecutorService getExecutorService() {
         return executorService;
