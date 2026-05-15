@@ -10,6 +10,7 @@ public class Location {
     private final int x;
     private final int y;
 
+    // TODO for parallel action applying should use CopyOnWriteArrayList
     private List<Entity> entities;
 
     private BiomeType biome;

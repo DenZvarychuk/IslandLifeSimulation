@@ -39,7 +39,7 @@ public class Application {
     private void initializeSimulation() {
         EventBus eventBus = new EventBus();
         SimulationStatistics statistics = new SimulationStatistics(eventBus);
-        this.simulationContext = new SimulationContext(eventBus, statistics);
+        this.simulationContext = new SimulationContext(eventBus, statistics, config);
         this.simulation = new Simulation(simulationContext, config);
     }
 
