@@ -30,7 +30,7 @@ public class RestExecutor implements BaseExecutor<RestResult> {
         Animal animal = result.getAnimal();
 
         animal.setEnergy(result.getEnergyAfter());
-        animal.setSatiety(animal.getSatiety() - animal.getActionSatietyCost()  / 2);
+        animal.setSatiety(animal.getSatiety() - animal.getActionSatietyCost() / 2);
 
         if (!animal.shouldExist()) {
             animal.markAsDeadAndRemove(result.getBaseActionLocation());

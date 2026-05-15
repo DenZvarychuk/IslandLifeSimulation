@@ -10,4 +10,3 @@ public enum ActionResultStatus {
     FAILED_PROBABILITY_CHECK,
     FAILED_TARGET_GONE
 }
-

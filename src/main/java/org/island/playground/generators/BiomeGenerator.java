@@ -60,6 +60,7 @@ public class BiomeGenerator {
 
         return lepr(ix0, ix1, sy);
     }
+
     private double smooth(double t) {
         return t * t * (3 - 2 * t);
     }

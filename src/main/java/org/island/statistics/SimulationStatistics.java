@@ -132,11 +132,11 @@ public class SimulationStatistics {
         deathRecords.forEach(System.out::println);
 
         Map<DeathReason, Long> map = deathRecords.stream()
-                        .collect(Collectors.groupingBy(
-                                DeathRecord::getReason,
-                                () -> new EnumMap<>(DeathReason.class),
-                                Collectors.counting()
-                        ));
+                .collect(Collectors.groupingBy(
+                        DeathRecord::getReason,
+                        () -> new EnumMap<>(DeathReason.class),
+                        Collectors.counting()
+                ));
         map.forEach((reason, count) -> System.out.println(reason + ": " + count));
 
         System.out.println("\n===========================================");

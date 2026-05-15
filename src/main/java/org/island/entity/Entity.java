@@ -14,7 +14,7 @@ public abstract class Entity<T extends EntityType> {
     protected double weight;
     protected boolean isExist;
 
-    public Entity(T type){
+    public Entity(T type) {
         this.isExist = true;
         this.type = type;
         this.id = type + "-" + UUID.randomUUID().toString();
@@ -28,7 +28,7 @@ public abstract class Entity<T extends EntityType> {
         this.weight = weight;
     }
 
-    public boolean isAtSameLocation(Entity entity){
+    public boolean isAtSameLocation(Entity entity) {
         return this.getX() == entity.getX()
                 && this.getY() == entity.getY();
     }

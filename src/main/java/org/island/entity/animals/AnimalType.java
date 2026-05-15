@@ -6,7 +6,7 @@ public enum AnimalType implements EntityType {
     WOLF, RABBIT;
 
     @Override
-    public String toString(){
+    public String toString() {
         return this.name();
     }
 }

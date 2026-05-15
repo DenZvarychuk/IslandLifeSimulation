@@ -1,6 +1,5 @@
 package org.island.engine.actions.resting;
 
-import org.island.config.action.ActionConfig;
 import org.island.config.action.RestConfig;
 import org.island.engine.actions.ActionResultStatus;
 import org.island.engine.actions.ActionType;
@@ -32,6 +31,7 @@ public class IdleRestStrategy implements RestStrategy {
             double gainedEnergy = energyBefore * config.getIdle().getEnergyBoost();
             System.out.println("animal " + animal.getId() + " will be resting");
             return new RestResult(actionType, animal, currentLocation, energyBefore, gainedEnergy, ActionResultStatus.SUCCESS);
-        } else return new RestResult(actionType, animal, currentLocation, energyBefore, energyBefore, ActionResultStatus.FAILED_PROBABILITY_CHECK);
+        } else
+            return new RestResult(actionType, animal, currentLocation, energyBefore, energyBefore, ActionResultStatus.FAILED_PROBABILITY_CHECK);
     }
 }

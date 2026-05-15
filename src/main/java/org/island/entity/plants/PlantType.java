@@ -6,7 +6,7 @@ public enum PlantType implements EntityType {
     TREE, GRASS, BUSH;
 
     @Override
-    public String toString(){
+    public String toString() {
         return this.name();
     }
 }
