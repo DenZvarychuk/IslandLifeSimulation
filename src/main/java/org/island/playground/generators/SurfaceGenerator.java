@@ -27,7 +27,7 @@ public class SurfaceGenerator {
                     loc.setSurface(SurfaceType.SAND);
                 } else {
                     if (v < rockPercentage) loc.setSurface(SurfaceType.ROCK);
-                    else loc.setSurface(SurfaceType.GRASS);
+                    else loc.setSurface(SurfaceType.SOIL);
                 }
 
             }
