@@ -51,7 +51,6 @@ public class SimulationConfig {
     public void setCycleDelay(long cycleDelay) {
         this.cycleDelay = cycleDelay;
     }
-}
 
     public int getThreadPoolSize() {
         return threadPoolSize;
