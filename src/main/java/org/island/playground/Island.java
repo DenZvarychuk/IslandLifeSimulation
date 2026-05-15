@@ -1,8 +1,8 @@
 package org.island.playground;
 
+import org.island.config.SimulationConfig;
 import org.island.config.entity.EntityConfig;
 import org.island.config.island.IslandConfig;
-import org.island.config.SimulationConfig;
 import org.island.entity.Entity;
 import org.island.entity.animals.Animal;
 import org.island.entity.animals.AnimalType;

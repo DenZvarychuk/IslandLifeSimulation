@@ -3,7 +3,7 @@ package org.island.entity.plants;
 import org.island.config.entity.PlantConfig;
 import org.island.playground.Location;
 
-public class Bush extends Plant{
+public class Bush extends Plant {
 
     public Bush(PlantConfig config, Location location) {
         super(config, PlantType.BUSH);

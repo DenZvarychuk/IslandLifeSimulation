@@ -29,7 +29,6 @@ public class RestConfig {
         this.idle = idle;
     }
 
-
     public static class SleepConfig {
         private double minEnergyRatio;
         private int cycleCount;
