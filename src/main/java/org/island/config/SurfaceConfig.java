@@ -1,4 +1,4 @@
-package org.island.config.island;
+package org.island.config;
 
 public class SurfaceConfig {
     private double rockPercentage;
